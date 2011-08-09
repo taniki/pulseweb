@@ -12,9 +12,9 @@ function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 	    data.forEach(function(c){
 			var current = {};
-				current['y'] = parseInt(c["x"] * 1500) + 50;
-				current['x'] = parseInt(c["y"] * 600) + 50;
-				current['w'] = parseInt(c["w"] / 50);
+				current['y'] = parseInt(c["x"] * 1500) - 100;
+				current['x'] = parseInt(c["y"] * 800);
+				current['w'] = Math.max( parseInt(c["w"] / 50), 5 );
 				//current['path'] = new paper.Path.Circle( [ current['x'], current['y'] ], current['w']);
 				//current['path'].fillColor = 'black';
 			
@@ -41,8 +41,6 @@ function get_links(){
 				var end = new paper.Point( current["x"], current["y"] );
 
 				var p = new paper.Path();
-
-				
 					p.add(start.add([ 0, - previous["w"] ]));
 					p.add(
 						new paper.Segment(
@@ -75,8 +73,8 @@ function get_links(){
 						)
 					);
 					p.add(start.add([ 0, + previous["w"] ]));
-				p.fillColor = 'black';
-				p.fillColor.alpha = 0.3;
+				p.fillColor = '#888888';
+				p.fillColor.alpha = 0.5;
 
 		});
 		paper.view.draw();

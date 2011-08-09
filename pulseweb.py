@@ -3,11 +3,12 @@ import sqlite3
 import json
 
 app = Flask(__name__)
-app.debug = settings.DEBUG
+##app.debug = settings.DEBUG
 
 ### DATABASE
 
-DATABASE = './db/alimsec_africa_light.db'
+# DATABASE = './db/alimsec_africa_light.db'
+DATABASE = './db/secalim_query_secalimandco.db'
 
 def connect_db():
     return sqlite3.connect(DATABASE)
@@ -55,8 +56,6 @@ def clusters_links():
 	links = []
 
 	for l in query_db('select * from phylogeny'):
-		
-		# Reduction des donnees transferees 1.4 mo -> 230 ko
 		l_light = {}
 		l_light["previous"] = l["previous_cluster_univ_id"]
 		l_light["current"] = l["current_cluster_univ_id"]

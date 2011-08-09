@@ -1,3 +1,10 @@
-h1 { font-family : Trade Gothic LT; }
+@import url("reset.css");
+
+.container { text-align : center; }
+.content { text-align : left; width : 960px; margin : 0 auto;}
+
+h1 { font : bold 30px/36px "Trade Gothic LT"; }
+
+canvas { margin : 0; }
 
 #tubes { }
