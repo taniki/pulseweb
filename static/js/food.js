@@ -1,9 +1,10 @@
+paper.install(window);
+
 window.onload = function() {
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);
 
     get_clusters();
-    
 }
 
 var clusters = {}
@@ -15,12 +16,12 @@ function get_clusters(){
 				current['y'] = parseInt(c["x"] * 1500) - 100;
 				current['x'] = parseInt(c["y"] * 800);
 				current['w'] = Math.max( parseInt(c["w"] / 50), 5 );
-				//current['path'] = new paper.Path.Circle( [ current['x'], current['y'] ], current['w']);
+				//current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 				//current['path'].fillColor = 'black';
 			
 			clusters[c["id"]] = current;
 		});
-		paper.view.draw();
+		view.draw();
 
 		get_links();
 
@@ -37,20 +38,20 @@ function get_links(){
 				var previous = clusters[c["previous"]];
 				var current = clusters[c["current"]];
 
-				var start = new paper.Point( previous["x"], previous["y"] );
-				var end = new paper.Point( current["x"], current["y"] );
+				var start = new Point( previous["x"], previous["y"] );
+				var end = new Point( current["x"], current["y"] );
 
-				var p = new paper.Path();
+				var p = new Path();
 					p.add(start.add([ 0, - previous["w"] ]));
 					p.add(
-						new paper.Segment(
+						new Segment(
 							start.add([ smooth_distance, - previous["w"] ]),
 							{x: 0, y: 0},
 							{x: smooth_force, y: 0}
 						)
 					);
 					p.add(
-						new paper.Segment(
+						new Segment(
 							end.add([ - smooth_distance, - current["w"] ]),
 							{x: -smooth_force, y: 0},
 							{x: 0, y: 0}
@@ -59,14 +60,14 @@ function get_links(){
 					p.add(end.add([ 0, - current["w"] ]));
 					p.add(end.add([ 0, + current["w"] ]));
 					p.add(
-						new paper.Segment(
+						new Segment(
 							end.add([ - smooth_distance, + current["w"] ]),
 							{x: 0, y: 0},
 							{x: -smooth_force, y: 0}
 						)
 					);
 					p.add(
-						new paper.Segment(
+						new Segment(
 							start.add([ smooth_distance, + previous["w"] ]),
 							{x: smooth_force, y: 0},
 							{x: 0, y: 0}
@@ -77,6 +78,6 @@ function get_links(){
 				p.fillColor.alpha = 0.5;
 
 		});
-		paper.view.draw();
+		view.draw();
 	});	
 }
