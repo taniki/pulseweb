@@ -8,6 +8,12 @@ window.onload = function() {
 	layer_links = new Layer();
 
     get_clusters();
+
+	var tool = new Tool();
+
+	tool.onMouseDown = function(event) {
+	    // move_clusters(event);
+	}
 }
 
 var clusters = {}
@@ -25,6 +31,7 @@ function get_clusters(){
 				current['x'] = parseInt(c["y"] * 800);
 				current['w'] = Math.max( parseInt(c["w"] / 100), 5 );
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
+				current['path'].cluster_id = c["id"];
 				current['path'].fillColor = 'black';
 
 			clusters[c["id"]] = current;
@@ -94,4 +101,13 @@ function get_links(){
 
 		view.draw();
 	});	
+}
+
+function move_clusters(e){
+    var hitResult = project.hitTest(e.point);
+
+	if(hitResult){
+		var item = hitResult.item;
+		item.selected = true;
+	}
 }
