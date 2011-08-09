@@ -4,21 +4,29 @@ window.onload = function() {
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);
 
+	layer_clusters = new Layer();
+	layer_links = new Layer();
+
     get_clusters();
 }
 
 var clusters = {}
 
+var layer_clusters;
+var layer_links;
+
 function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
+		layer_clusters.activate();
+
 	    data.forEach(function(c){
 			var current = {};
 				current['y'] = parseInt(c["x"] * 1500) - 100;
 				current['x'] = parseInt(c["y"] * 800);
-				current['w'] = Math.max( parseInt(c["w"] / 50), 5 );
-				//current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
-				//current['path'].fillColor = 'black';
-			
+				current['w'] = Math.max( parseInt(c["w"] / 100), 5 );
+				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
+				current['path'].fillColor = 'black';
+
 			clusters[c["id"]] = current;
 		});
 		view.draw();
@@ -31,6 +39,9 @@ function get_clusters(){
 function get_links(){
 	$.getJSON("/data/clusters/links", {}, function(data){
 		console.log(clusters);
+		
+		layer_links.activate();
+		
 	    data.forEach(function(c){
 				var smooth_distance = 15;
 				var smooth_force = 30;
@@ -78,6 +89,9 @@ function get_links(){
 				p.fillColor.alpha = 0.5;
 
 		});
+
+		layer_links.moveBelow(layer_clusters);
+
 		view.draw();
 	});	
 }
