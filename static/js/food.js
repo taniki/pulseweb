@@ -6,6 +6,7 @@ window.onload = function() {
 
 	layer_clusters = new Layer();
 	layer_links = new Layer();
+	viz_elements = new Group;
 
     get_clusters();
 
@@ -20,23 +21,42 @@ var clusters = {}
 
 var layer_clusters;
 var layer_links;
+var viz_elements;
+var control_elements;
 
 function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 		layer_clusters.activate();
 
+		var cluster_box_width = 200;
+
 	    data.forEach(function(c){
 			var current = {};
-				current['y'] = parseInt(c["x"] * 1500) - 100;
-				current['x'] = parseInt(c["y"] * 800);
-				current['w'] = Math.max( parseInt(c["w"] / 100), 5 );
-				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
-				current['path'].cluster_id = c["id"];
-				current['path'].fillColor = 'black';
+				current['y'] = parseInt(c["x"] * 2000) - 100;
+				current['x'] = parseInt(c["y"] * 4000) + cluster_box_width;
+				current['w'] = Math.max( parseInt(c["w"] / 100), 10 );
 
+//				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
+				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
+				current['path'].fillColor = '#bbbbbb';
+				
+				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
+				current['label'].characterStyle = {
+					font: "verdana",
+					fontSize: 6,
+					fillColor: "black"
+				};
+				current['label'].paragraphStyle = {
+					justification: 'center'
+				}
+				current['label'].content = c["label"];
+
+				current['path'].cluster_id = c["id"];
+				
 			clusters[c["id"]] = current;
 		});
-		view.draw();
+
+		layer_clusters.visible = true;
 
 		get_links();
 
@@ -50,7 +70,7 @@ function get_links(){
 		layer_links.activate();
 		
 	    data.forEach(function(c){
-				var smooth_distance = 15;
+				var smooth_distance = 100;
 				var smooth_force = 30;
 			
 				var previous = clusters[c["previous"]];
@@ -98,6 +118,9 @@ function get_links(){
 		});
 
 		layer_links.moveBelow(layer_clusters);
+
+//		layer_clusters.scale(0.5, new Point(0, 0));
+//		layer_links.scale(0.5, new Point(0, 0));
 
 		view.draw();
 	});	
