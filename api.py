@@ -19,6 +19,7 @@ def clusters():
 		cluster_light["x"] = cluster["pos_x"]
 		cluster_light["y"] = cluster["pos_y"]
 		cluster_light["w"] = cluster["width"]
+		cluster_light["stream_id"] = cluster["stream_id"]
 
 		clusters.append(cluster_light)
 

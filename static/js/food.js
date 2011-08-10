@@ -16,11 +16,14 @@ window.onload = function() {
 	}
 	
 	tool.onMouseDrag = function(event) {
-		console.log("drag");
+		//console.log("drag");
 		layer_clusters.position = layer_clusters.position.add( event.delta) ;
 		layer_links.position = layer_links.position.add( event.delta) ;
 	}
 }
+
+var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
+var colors_sub = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
 
 var clusters = {}
 
@@ -39,11 +42,13 @@ function get_clusters(){
 			var current = {};
 				current['y'] = parseInt(c["x"] * 2000) - 100;
 				current['x'] = parseInt(c["y"] * 1800) + cluster_box_width + 100;
-				current['w'] = Math.max( parseInt(c["w"] / 100), 8 );
+				current['w'] = Math.max( parseInt(c["w"] / 50), 8 );
+				current['stream'] = c["stream_id"];
 
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
-				current['path'].fillColor = '#bbbbbb';
+				current['path'].fillColor = '#ffffff';
+				current['path'].fillColor.alpha = 0.6;
 				
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
@@ -117,8 +122,8 @@ function get_links(){
 						)
 					);
 					p.add(start.add([ 0, + previous["w"] ]));
-				p.fillColor = '#888888';
-				p.fillColor.alpha = 0.5;
+				p.fillColor = colors_plain[ previous["stream"] % colors_plain.length ];
+				p.fillColor.alpha = 1;
 
 		});
 
