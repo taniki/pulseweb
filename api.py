@@ -37,3 +37,12 @@ def clusters_links():
 		links.append(l_light)
 
 	return json.dumps(links)
+
+@app.route("/data/meta")
+def meta():
+	# SELECT pos_y, SUM(width) FROM
+	# (SELECT * FROM clusters GROUP BY cluster_univ_id)
+	# GROUP BY pos_y
+	
+	
+	pass

@@ -40,9 +40,9 @@ function get_clusters(){
 
 	    data.forEach(function(c){
 			var current = {};
-				current['y'] = parseInt(c["x"] * 2000) - 100;
+				current['y'] = parseInt(c["x"] * 2500) - 100;
 				current['x'] = parseInt(c["y"] * 1800) + cluster_box_width + 100;
-				current['w'] = Math.max( parseInt(c["w"] / 50), 8 );
+				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
 
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
@@ -60,6 +60,17 @@ function get_clusters(){
 					justification: 'center'
 				}
 				current['label'].content = c["label"];
+
+				current['label_width'] = new PointText( new Point(current['x'], current['y'] + 14 ));
+				current['label_width'].characterStyle = {
+					font: "verdana",
+					fontSize: 6,
+					fillColor: "black"
+				};
+				current['label_width'].paragraphStyle = {
+					justification: 'center'
+				}
+				current['label_width'].content = c["w"];
 
 				current['path'].cluster_id = c["id"];
 				
@@ -123,7 +134,7 @@ function get_links(){
 					);
 					p.add(start.add([ 0, + previous["w"] ]));
 				p.fillColor = colors_plain[ previous["stream"] % colors_plain.length ];
-				p.fillColor.alpha = 1;
+				p.fillColor.alpha = 0.9;
 
 		});
 
