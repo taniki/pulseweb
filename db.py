@@ -3,12 +3,9 @@ from pulseweb import app
 
 import sqlite3
 
-# DATABASE = './db/alimsec_africa_light.db'
-#DATABASE = './pulseweb/db/secalim_query_secalimandco.db'
-DATABASE = '/Users/tamkienduong/Sites/globalpulse/pulseweb/db/secalim_query_secalimandco.db'
 
 def connect_db():
-    return sqlite3.connect(DATABASE)
+    return sqlite3.connect(app.DATABASE)
 
 @app.before_request
 def before_request():
