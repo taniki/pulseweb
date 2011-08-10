@@ -17,7 +17,8 @@ def clusters():
 		cluster_light["label"] = cluster["cluster_label"]
 		cluster_light["id"] = cluster["cluster_univ_id"]
 		cluster_light["x"] = cluster["pos_x"]
-		cluster_light["y"] = cluster["pos_y"]
+		cluster_light["y_norm"] = cluster["pos_y"]
+		cluster_light["y"] = cluster["pos_y_t"]
 		cluster_light["w"] = cluster["width"]
 		cluster_light["stream_id"] = cluster["stream_id"]
 

@@ -41,7 +41,7 @@ function get_clusters(){
 	    data.forEach(function(c){
 			var current = {};
 				current['y'] = parseInt(c["x"] * 2500) - 100;
-				current['x'] = parseInt(c["y"] * 1800) + cluster_box_width + 100;
+				current['x'] = parseInt(c["y"] * 2500) + cluster_box_width + 100;
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
 
