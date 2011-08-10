@@ -1,6 +1,6 @@
 from pulseweb import app
 from pulseweb.db import query_db
-import json
+import simplejson as json
 
 @app.route('/data/tubes')
 def tubes():
