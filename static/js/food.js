@@ -13,7 +13,12 @@ window.onload = function() {
 	var tool = new Tool();
 
 	tool.onMouseDown = function(event) {
-	    // move_clusters(event);
+	}
+	
+	tool.onMouseDrag = function(event) {
+		console.log("drag");
+		layer_clusters.position = layer_clusters.position.add( event.delta) ;
+		layer_links.position = layer_links.position.add( event.delta) ;
 	}
 }
 
