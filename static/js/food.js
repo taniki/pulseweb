@@ -28,22 +28,22 @@ function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 		layer_clusters.activate();
 
-		var cluster_box_width = 200;
+		var cluster_box_width = 0;
 
 	    data.forEach(function(c){
 			var current = {};
 				current['y'] = parseInt(c["x"] * 2000) - 100;
-				current['x'] = parseInt(c["y"] * 4000) + cluster_box_width;
-				current['w'] = Math.max( parseInt(c["w"] / 100), 10 );
+				current['x'] = parseInt(c["y"] * 1800) + cluster_box_width + 100;
+				current['w'] = Math.max( parseInt(c["w"] / 100), 8 );
 
-//				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
-				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
+				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
+//				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#bbbbbb';
 				
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
 					font: "verdana",
-					fontSize: 6,
+					fontSize: 7,
 					fillColor: "black"
 				};
 				current['label'].paragraphStyle = {
@@ -70,7 +70,7 @@ function get_links(){
 		layer_links.activate();
 		
 	    data.forEach(function(c){
-				var smooth_distance = 100;
+				var smooth_distance = 5;
 				var smooth_force = 30;
 			
 				var previous = clusters[c["previous"]];
