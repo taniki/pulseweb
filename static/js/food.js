@@ -4,10 +4,13 @@ window.onload = function() {
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);
 
+	layer_background = new Layer();
 	layer_clusters = new Layer();
 	layer_links = new Layer();
+
 	viz_elements = new Group;
 
+	draw_background();
     get_clusters();
 
 	var tool = new Tool();
@@ -19,6 +22,7 @@ window.onload = function() {
 		//console.log("drag");
 		layer_clusters.position = layer_clusters.position.add( event.delta) ;
 		layer_links.position = layer_links.position.add( event.delta) ;
+		layer_background.position = layer_background.position.add( [ event.delta.x, 0] ) ;
 	}
 }
 
@@ -29,8 +33,40 @@ var clusters = {}
 
 var layer_clusters;
 var layer_links;
+var layer_background;
+
 var viz_elements;
 var control_elements;
+
+function draw_background(){
+	layer_background.activate();
+	
+	var h = view.size.height;
+	var day_pixels = parseInt( 4198 / 2500 ); 
+
+	for(var y = 0;  y < 12; y++){
+		var x = y * 360 * day_pixels;
+		var p = new Path();
+			p.add( [ 100 + x, 0 ]);
+			p.add( [ 100 + x, h ]);
+		p.strokeColor = "#dddddd";
+		p.strokeWidth = 1;
+
+		var label = new PointText( new Point( x + 20 + 100, 50) );
+		label.characterStyle = {
+			font: "verdana",
+			fontSize: 24,
+			fillColor: "black"
+		};
+		label.paragraphStyle = {
+			justification: 'left'
+		};
+		label.content = 2000 + y;
+
+		//console.log(p);
+	}
+	
+}
 
 function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
@@ -40,7 +76,7 @@ function get_clusters(){
 
 	    data.forEach(function(c){
 			var current = {};
-				current['y'] = parseInt(c["x"] * 2500) - 100;
+				current['y'] = parseInt(c["x"] * 2500);
 				current['x'] = parseInt(c["y"] * 2500) + cluster_box_width + 100;
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
@@ -49,6 +85,8 @@ function get_clusters(){
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#ffffff';
 				current['path'].fillColor.alpha = 0.6;
+				// current['path'].fillColor = colors_plain[ current["stream"] % colors_plain.length ];
+				// current['path'].fillColor.alpha = 1;
 				
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
@@ -86,7 +124,7 @@ function get_clusters(){
 
 function get_links(){
 	$.getJSON("/data/clusters/links", {}, function(data){
-		console.log(clusters);
+		// console.log(clusters);
 		
 		layer_links.activate();
 		
@@ -139,6 +177,7 @@ function get_links(){
 		});
 
 		layer_links.moveBelow(layer_clusters);
+		layer_background.moveBelow(layer_links);
 
 //		layer_clusters.scale(0.5, new Point(0, 0));
 //		layer_links.scale(0.5, new Point(0, 0));
