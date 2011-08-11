@@ -81,12 +81,19 @@ function get_clusters(){
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
 
+				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
+				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
+				b.fillColor = colors_plain[ current["stream"] % colors_plain.length ];
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#ffffff';
 				current['path'].fillColor.alpha = 0.6;
+				
 				// current['path'].fillColor = colors_plain[ current["stream"] % colors_plain.length ];
-				// current['path'].fillColor.alpha = 1;
+				// current['path'].fillColor.red = current['path'].fillColor.red - 0.6;
+				// current['path'].fillColor.blue = current['path'].fillColor.blue - 0.6;
+				// current['path'].fillColor.green = current['path'].fillColor.green - 0.6;
+
 				
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
