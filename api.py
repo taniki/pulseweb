@@ -24,6 +24,8 @@ def clusters():
 		t = cluster["period"].split("_")
 		
 		cluster_light["period_length"] = int(t[1]) - int(t[0])
+		cluster_light["start"] = int(t[0])
+		cluster_light["end"] = int(t[1])
 		cluster_light["stream_id"] = cluster["stream_id"]
 
 		clusters.append(cluster_light)
@@ -48,6 +50,21 @@ def meta():
 	# SELECT pos_y, SUM(width) FROM
 	# (SELECT * FROM clusters GROUP BY cluster_univ_id)
 	# GROUP BY pos_y
-	
-	
 	pass
+
+@app.route("/data/distribution/articles/by_month")
+def articles_month():
+	q = "select count(*) as size, strftime('%Y-%m', data) as month from publicationDate group by strftime('%Y-%m', data)"
+	
+	distribution = {}
+	
+	for m in query_db(q):
+		d = m["month"].split("-")
+		
+#		if type(distribution[ d[0] ]) is not dict:
+		if not distribution.has_key( d[0] ):
+			distribution[ d[0] ] = {}
+		
+		distribution[ d[0] ][ d[1] ] = m["size"]
+
+	return json.dumps(distribution)

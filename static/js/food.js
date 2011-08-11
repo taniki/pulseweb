@@ -11,6 +11,8 @@ window.onload = function() {
 	viz_elements = new Group;
 
 	draw_background();
+	
+	get_distribution();
     get_clusters();
 
 	var tool = new Tool();
@@ -38,11 +40,12 @@ var layer_background;
 var viz_elements;
 var control_elements;
 
+var day_pixels = 2500 / 4198; 
+
 function draw_background(){
 	layer_background.activate();
 	
 	var h = view.size.height;
-	var day_pixels = 2500 / 4198; 
 
 	for(var y = 0;  y < 12; y++){
 		var x = parseInt( y * 360 * day_pixels) + 0.5;
@@ -52,7 +55,7 @@ function draw_background(){
 		p.strokeColor = "#dddddd";
 		p.strokeWidth = 1;
 
-		var label = new PointText( new Point( x + 20 + 100, 50) );
+		var label = new PointText( new Point( x + 10 + 100, 30) );
 		label.characterStyle = {
 			font: "verdana",
 			fontSize: 24,
@@ -68,6 +71,39 @@ function draw_background(){
 	
 }
 
+function get_distribution(){
+	$.getJSON("/data/distribution/articles/by_month", {}, function(data){
+		draw_distribution_articles_by_month(data);
+	});
+}
+
+function draw_distribution_articles_by_month(d){
+	layer_background.activate();
+	
+	Object.keys(d).forEach(function(year){
+		Object.keys(d[year]).forEach(function (month){
+			console.log( year - 2000);
+			point = new Point( parseInt( ( 360 * ( year - 2000) + 30 * (month - 1)) * day_pixels) + 100 + 1, 35);
+			size = new Size( 29 * day_pixels, parseInt( d[year][month] / 5) + 10);
+			var r = new Path.Rectangle(point, size);
+			r.fillColor= "#dddddd"
+
+			var label = new PointText( point.add( [ 15*day_pixels, 9] ));
+			label.characterStyle = {
+				font: "verdana",
+				fontSize: 6,
+				fillColor: "#777"
+			};
+			label.paragraphStyle = {
+				justification: 'center'
+			};
+			label.content = d[year][month];
+
+		});
+	});
+}
+
+
 function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 		layer_clusters.activate();
@@ -76,8 +112,12 @@ function get_clusters(){
 
 	    data.forEach(function(c){
 			var current = {};
+				// console.log(c);
+			
 				current['y'] = parseInt(c["x"] * 2500);
 				current['x'] = parseInt(c["y"] * 2500) + cluster_box_width + 100;
+//				current['x'] = parseInt( day_pixels * c["end"] ) + cluster_box_width + 100;
+
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
 
