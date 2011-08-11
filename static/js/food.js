@@ -42,10 +42,10 @@ function draw_background(){
 	layer_background.activate();
 	
 	var h = view.size.height;
-	var day_pixels = parseInt( 4198 / 2500 ); 
+	var day_pixels = 2500 / 4198; 
 
 	for(var y = 0;  y < 12; y++){
-		var x = y * 360 * day_pixels;
+		var x = parseInt( y * 360 * day_pixels) + 0.5;
 		var p = new Path();
 			p.add( [ 100 + x, 0 ]);
 			p.add( [ 100 + x, h ]);
