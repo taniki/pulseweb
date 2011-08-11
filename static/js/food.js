@@ -115,7 +115,10 @@ function get_clusters(){
 				current['label_width'].paragraphStyle = {
 					justification: 'center'
 				}
-				current['label_width'].content = c["w"];
+				
+				current["density"] = c["w"] / c["period_length"];
+				
+				current['label_width'].content = current["w"];
 
 				current['path'].cluster_id = c["id"];
 				

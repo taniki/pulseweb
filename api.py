@@ -20,6 +20,10 @@ def clusters():
 		cluster_light["y_norm"] = cluster["pos_y"]
 		cluster_light["y"] = cluster["pos_y_t"]
 		cluster_light["w"] = cluster["width"]
+		
+		t = cluster["period"].split("_")
+		
+		cluster_light["period_length"] = int(t[1]) - int(t[0])
 		cluster_light["stream_id"] = cluster["stream_id"]
 
 		clusters.append(cluster_light)
