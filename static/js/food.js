@@ -1,6 +1,9 @@
 paper.install(window);
 
 window.onload = function() {
+	$("#tubes").attr("width", $(window).width() );
+	$("#tubes").attr("height", $(window).height() );
+
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);
 
@@ -26,7 +29,12 @@ window.onload = function() {
 		layer_links.position = layer_links.position.add( event.delta) ;
 		layer_background.position = layer_background.position.add( [ event.delta.x, 0] ) ;
 	}
+	
+	view.onResize = function(e){
+//		layer_background;
+	}
 }
+
 
 var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
 var colors_sub = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
@@ -45,7 +53,8 @@ var day_pixels = 2500 / 4198;
 function draw_background(){
 	layer_background.activate();
 	
-	var h = view.size.height;
+	// BEURK
+	var h = 3000; //view.size.height;
 
 	for(var y = 0;  y < 12; y++){
 		var x = parseInt( y * 360 * day_pixels) + 0.5;
