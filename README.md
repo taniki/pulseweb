@@ -2,7 +2,7 @@
 
 - create a __main__.py file in the folder containing the ``pulseweb`` folder
 
-		from pulseweb import app
+	from pulseweb import app
 	
 	app.DATABASE = 'PATHTO/pulseweb/db/secalim_query_secalimandco.db'
 	
