@@ -25,9 +25,7 @@ window.onload = function() {
 	
 	tool.onMouseDrag = function(event) {
 		//console.log("drag");
-		layer_clusters.position = layer_clusters.position.add( event.delta) ;
-		layer_links.position = layer_links.position.add( event.delta) ;
-		layer_background.position = layer_background.position.add( [ event.delta.x, 0] ) ;
+		panTo( event.delta.x , event.delta.y )
 	}
 	
 	view.onResize = function(e){
@@ -49,6 +47,13 @@ var viz_elements;
 var control_elements;
 
 var day_pixels = 2500 / 4198; 
+
+function panTo(x,y){
+	
+	layer_clusters.position = layer_clusters.position.add( [x, y]) ;
+	layer_links.position = layer_links.position.add( [x, y] ) ;
+	layer_background.position = layer_background.position.add( [x, 0] ) ;
+}
 
 function draw_background(){
 	layer_background.activate();
@@ -240,6 +245,7 @@ function get_links(){
 
 //		layer_clusters.scale(0.5, new Point(0, 0));
 //		layer_links.scale(0.5, new Point(0, 0));
+		panTo(-1500, -300);
 
 		view.draw();
 	});	
