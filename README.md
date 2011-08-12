@@ -2,17 +2,21 @@
 
 - create a ``__main__.py`` file in the folder containing the ``pulseweb`` folder
 
-		from pulseweb import app
-		
-		app.DATABASE = 'PATHTO/pulseweb/db/secalim_query_secalimandco.db'
-		
-		if __name__ == '__main__':
-			app.debug = True
-			app.run()
+```python
+from pulseweb import app
+
+app.DATABASE = 'PATHTO/pulseweb/db/secalim_query_secalimandco.db'
+
+if __name__ == '__main__':
+	app.debug = True
+	app.run()
+```
 
 - execute it (:
 
-		$ python __main__.py
+```shell
+$ python __main__.py
+```
 
 ## Dependencies ##
 
