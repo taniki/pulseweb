@@ -1,6 +1,6 @@
 ## Start the server ##
 
-- create a __main__.py file in the folder containing the ``pulseweb`` folder
+- create a ``__main__.py`` file in the folder containing the ``pulseweb`` folder
 
 		from pulseweb import app
 		
@@ -12,7 +12,7 @@
 
 - execute it (:
 
-	$ python __main__.py
+		$ python __main__.py
 
 ## Dependencies ##
 
