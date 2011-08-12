@@ -1,5 +1,9 @@
 from pulseweb import app
 from pulseweb.db import query_db
+from werkzeug.contrib.cache import SimpleCache
+
+cache = SimpleCache()
+
 import simplejson as json
 
 @app.route('/data/tubes')
@@ -10,27 +14,33 @@ def tubes():
 def clusters():
 	clusters = []
 
-	for cluster in query_db('select * from clusters group by cluster_univ_id'):
-		
-		# Reduction des donnees transferees 1.4 mo -> 230 ko
-		cluster_light = {}
-		cluster_light["label"] = cluster["cluster_label"]
-		cluster_light["id"] = cluster["cluster_univ_id"]
-		cluster_light["x"] = cluster["pos_x"]
-		cluster_light["y_norm"] = cluster["pos_y"]
-		cluster_light["y"] = cluster["pos_y_t"]
-		cluster_light["w"] = cluster["width"]
-		
-		t = cluster["period"].split("_")
-		
-		cluster_light["period_length"] = int(t[1]) - int(t[0])
-		cluster_light["start"] = int(t[0])
-		cluster_light["end"] = int(t[1])
-		cluster_light["stream_id"] = cluster["stream_id"]
+	resp = cache.get("clusters")
 
-		clusters.append(cluster_light)
+	if resp is None:
+		for cluster in query_db('select * from clusters group by cluster_univ_id'):
+		
+			# Reduction des donnees transferees 1.4 mo -> 230 ko
+			cluster_light = {}
+			cluster_light["label"] = cluster["cluster_label"]
+			cluster_light["id"] = cluster["cluster_univ_id"]
+			cluster_light["x"] = cluster["pos_x"]
+			cluster_light["y_norm"] = cluster["pos_y"]
+			cluster_light["y"] = cluster["pos_y_t"]
+			cluster_light["w"] = cluster["width"]
+		
+			t = cluster["period"].split("_")
+		
+			cluster_light["period_length"] = int(t[1]) - int(t[0])
+			cluster_light["start"] = int(t[0])
+			cluster_light["end"] = int(t[1])
+			cluster_light["stream_id"] = cluster["stream_id"]
 
-	return json.dumps(clusters)
+			clusters.append(cluster_light)
+
+		resp = clusters
+        cache.set('clusters', resp, timeout=5 * 60)
+
+	return json.dumps(resp)
 
 @app.route('/data/clusters/links')
 def clusters_links():

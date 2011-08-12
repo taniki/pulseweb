@@ -82,7 +82,7 @@ function draw_distribution_articles_by_month(d){
 	
 	Object.keys(d).forEach(function(year){
 		Object.keys(d[year]).forEach(function (month){
-			console.log( year - 2000);
+			//console.log( year - 2000);
 			point = new Point( parseInt( ( 360 * ( year - 2000) + 30 * (month - 1)) * day_pixels) + 100 + 1, 38);
 			size = new Size( 29 * day_pixels, parseInt( d[year][month] / 5) + 10);
 			var r = new Path.Rectangle(point, size);
