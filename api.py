@@ -42,6 +42,38 @@ def clusters():
 
 	return json.dumps(resp)
 
+@app.route('/data/clusters/positions/metrolines')
+def clusters_metrolines():
+	clusters = []
+
+	resp = cache.get("clusters")
+
+	if resp is None:
+		for cluster in query_db('select clusters.*, positions_metrolines_cam.* from clusters, positions_metrolines_cam WHERE clusters.cluster_univ_id =  positions_metrolines_cam.cluster_univ_id group by cluster_univ_id'):
+
+			# Reduction des donnees transferees 1.4 mo -> 230 ko
+			
+			cluster_light = {}
+			cluster_light["label"] = cluster["cluster_label"]
+			cluster_light["id"] = cluster["cluster_univ_id"]
+			cluster_light["x"] = cluster["y_pos"]
+			cluster_light["y"] = cluster["pos_y"]
+			cluster_light["w"] = cluster["width"]
+
+			t = cluster["period"].split("_")
+
+			cluster_light["period_length"] = int(t[1]) - int(t[0])
+			cluster_light["start"] = int(t[0])
+			cluster_light["end"] = int(t[1])
+			cluster_light["stream_id"] = cluster["stream_id"]
+
+			clusters.append(cluster_light)
+
+		resp = clusters
+        cache.set('clusters', resp, timeout=5 * 60)
+
+	return json.dumps(resp)
+
 @app.route('/data/clusters/links')
 def clusters_links():
 	links = []

@@ -8,3 +8,7 @@ def pulsehome():
 @app.route('/food/')
 def foodsecurity():
 	return render_template("food_security.html")
+	
+@app.route('/metrolines/')
+def foodsecurity():
+	return render_template("metrolines.html")
