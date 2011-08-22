@@ -2,8 +2,24 @@ paper.install(window);
 
 var project_tubes;
 
+var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
+var colors_sub = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
+
+var clusters = {}
+
+var layer_clusters;
+var layer_links;
+var layer_background;
+
+var viz_elements;
+var control_elements;
+
+var day_pixels = 2500 / 4198;
+
+var global_move = { x:0, y:0 }
+
 window.onload = function() {
-	$("#tubes").attr("width", $(window).width() );
+	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
 
 	project_tubes = new Project()
@@ -30,34 +46,51 @@ window.onload = function() {
 	
 	tool.onMouseDrag = function(event) {
 		//console.log("drag");
-		panTo( event.delta.x , event.delta.y )
+		pan_of( event.delta.x , event.delta.y )
 	}
 	
 	view.onResize = function(e){
 //		layer_background;
 	}
+	
+	view.onFrame = function(){
+		if(global_move["x"] != 0 || global_move["y"] != 0){
+			global_move["x"] = Math.ceil( (global_move["x"]) / 2);
+			global_move["y"] = Math.ceil( (global_move["y"]) / 2);
+
+			// hahahahahahaarrrrggg
+			if (global_move["x"] == 1) global_move["x"] = 0
+			if (global_move["y"] == 1) global_move["y"] = 0
+			
+			console.log( [ global_move["x"], global_move["y"] ]);
+
+			pan_of(global_move["x"], global_move["y"]);
+		}
+	}
 }
 
-
-var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
-var colors_sub = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
-
-var clusters = {}
-
-var layer_clusters;
-var layer_links;
-var layer_background;
-
-var viz_elements;
-var control_elements;
-
-var day_pixels = 2500 / 4198; 
-
-function panTo(x,y){
-	
+function pan_of(x,y){
 	layer_clusters.position = layer_clusters.position.add( [x, y]) ;
 	layer_links.position = layer_links.position.add( [x, y] ) ;
 	layer_background.position = layer_background.position.add( [x, 0] ) ;
+	
+	view.draw();
+}
+
+function pan_to_cluster(cluster){
+	var c = clusters[cluster["id"]];
+
+	// console.log(layer_clusters.position);
+	// console.log(layer_clusters.bounds);
+	// console.log(c);
+
+	var x = - c["x"] - layer_clusters.bounds.topLeft.x + parseInt( view.size.width  / 2 );
+	var y = - c["y"] - layer_clusters.bounds.topLeft.y + parseInt( view.size.height / 2 );
+
+	console.log("-> ["+ x +","+ y +"]");
+
+	global_move["x"] += x;
+	global_move["y"] += y;
 }
 
 function draw_background(){
@@ -250,7 +283,7 @@ function get_links(){
 
 //		layer_clusters.scale(0.5, new Point(0, 0));
 //		layer_links.scale(0.5, new Point(0, 0));
-		panTo(-1500, -300);
+		pan_of(-1500, -300);
 
 		view.draw();
 	});	

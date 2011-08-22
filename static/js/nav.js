@@ -37,7 +37,7 @@ metroline_view = Backbone.View.extend({
 		$(this.el).html(this.template(this.model.toJSON()));
 
 		var title = this.model.get('title');
-		draw_metroline_single(this.$("canvas"), this.model);
+		init_metroline_single(this.$("canvas")[0], this.model);
 
 		this.$('h3').text(title);
 
@@ -59,7 +59,6 @@ metrolines_nav = Backbone.View.extend({
 		metrolines.bind("reset", this.reset, this);
 		
 		metrolines.fetch();
-		console.log(metrolines);
 	},
 	
 	reset: function(l){		

@@ -1,18 +1,54 @@
 var cluster_radius = 4;
 
-function draw_metroline_single(canvas, stream){
-	//console.log(canvas);
-	
+var mouseX;
+var mouseY;
+
+var mouseDown = false;
+
+function init_metroline_single(canvas, stream){
+
 	$(canvas).attr("width", 220-12);
 	$(canvas).attr("height", 20 * stream.get("height") );
 
-	var c = canvas[0].getContext('2d');
+	if(isNaN(stream.get("height"))){
+		$(canvas).attr("height", 10 );
+	}
+
+	draw_metroline_single(canvas, stream);
+	
+	canvas.addEventListener("mousemove", function(e){
+
+		mouseX = e.offsetX;
+		mouseY = e.offsetY;
+		
+		draw_metroline_single(canvas, stream);
+	});
+	
+	canvas.addEventListener("click", function(e){
+
+		mouseX = e.offsetX;
+		mouseY = e.offsetY;
+		
+		mouseDown = true;
+		
+		draw_metroline_single(canvas, stream);
+
+		mouseDown = false;
+	});
+	
+	return canvas;
+}
+
+function draw_metroline_single(canvas, stream){
+	var c = canvas.getContext('2d');
+
+    c.clearRect(0,0,canvas.width,canvas.height);
 
 	var clusters = stream.get("clusters");
 	var links = stream.get("links");
 
 	links.forEach(function(link){
-		console.log(link);
+//		console.log(link);
 
 		c.beginPath();
 
@@ -25,14 +61,6 @@ function draw_metroline_single(canvas, stream){
 		c.moveTo(start_x, start_y);
 		c.lineTo(end_x, end_y);
 
-		// c.moveTo(start_x, start_y - cluster_radius);
-		// c.lineTo(start_x + 4, start_y - cluster_radius);
-		// c.lineTo(end_x - 4, end_y - cluster_radius);
-		// c.lineTo(end_x, end_y - cluster_radius);
-		// c.lineTo(end_x, end_y + cluster_radius);
-		// c.lineTo(end_x - 4, end_y + cluster_radius);
-		// c.lineTo(start_x + 4, start_y + cluster_radius);
-		// c.lineTo(start_x, start_y + cluster_radius);
 		c.lineWidth = 8;
 		c.strokeStyle = colors_plain[ stream.get("id") % colors_plain.length ];
 		c.stroke();
@@ -49,7 +77,18 @@ function draw_metroline_single(canvas, stream){
 
 		c.beginPath();
 		c.arc(x, y, cluster_radius, 0, Math.PI*2,true);
-		c.fillStyle = 'rgba(255,255,255, 0.6)';
+		
+		var alpha = 0.6
+
+		if(c.isPointInPath(mouseX, mouseY)){
+			alpha = 1;
+		}
+
+		if(c.isPointInPath(mouseX, mouseY) && mouseDown){
+			pan_to_cluster(cluster);
+		}
+
+		c.fillStyle = 'rgba(255,255,255,'+ alpha +')';
 		c.fill();
 	});
 

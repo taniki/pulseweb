@@ -1,5 +1,7 @@
 @import url("reset.css");
 
+body { overflow : hidden; }
+
 .container { text-align : center; width : 100%; overflow : hidden; }
 .content { text-align : left; width : 960px; margin : 0 auto;}
 
@@ -12,6 +14,6 @@ h1 { font : bold 30px/36px "Varela", sans-serif; }
 
 canvas { margin : 0; }
 
-#big_viz { position: absolute; top : 0; left : 0; height : 100%; z-index : -1;}
+#big_viz { position: absolute; top : 0px; left : 0px; height : 100%; z-index : -1;}
 
 #tubes {  }
