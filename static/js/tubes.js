@@ -1,8 +1,13 @@
 paper.install(window);
 
+var project_tubes;
+
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() );
 	$("#tubes").attr("height", $(window).height() );
+
+	project_tubes = new Project()
+	project_tubes.activate();
 
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);

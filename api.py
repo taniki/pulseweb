@@ -6,6 +6,59 @@ cache = SimpleCache()
 
 import simplejson as json
 
+@app.route('/data/streams')
+def streams():
+	streams = []
+	
+	for s in query_db('select * from clusters group by stream_id'):
+		stream = {}
+
+		stream["id"] = s["stream_id"]	
+		stream["title"] = s["cluster_label"]
+		stream["clusters"] = []
+		stream["links"] = []
+
+		stream_min_y = query_db('SELECT min(y_pos) FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.stream_id' % (s["stream_id"]));
+		stream_max_y = query_db('SELECT max(y_pos) FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.stream_id' % (s["stream_id"]));
+
+		if(stream_min_y):
+			stream["min_y"] = stream_min_y[0]["min(y_pos)"]
+
+		if(stream_max_y):
+			stream["max_y"] = stream_max_y[0]["max(y_pos)"]
+			stream["height"]= stream["max_y"] - stream["min_y"] + 1
+
+		clusters = {}
+
+		for t in query_db('SELECT clusters.*, positions_metrolines_cam.* FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.cluster_univ_id ORDER BY pos_y' % (s["stream_id"])):
+			cluster = {}
+			
+			cluster["id"] = t["cluster_univ_id"]
+			cluster["x"] = t["pos_y"]
+			cluster["y"] = t["y_pos"] - stream["min_y"]
+
+			clusters[cluster["id"]] = cluster
+			stream["clusters"].append(cluster)
+
+		for l in query_db('SELECT * FROM phylogeny WHERE stream_id = %i' % (s["stream_id"])):
+			l_light = {}
+			l_light["previous"] = l["previous_cluster_univ_id"]
+			l_light["current"] = l["current_cluster_univ_id"]
+
+			l_light["start"] = {}
+			l_light["start"]["x"] = clusters[l_light["previous"]]["x"]
+			l_light["start"]["y"] = clusters[l_light["previous"]]["y"]
+
+			l_light["end"] = {}
+			l_light["end"]["x"] = clusters[l_light["current"]]["x"]
+			l_light["end"]["y"] = clusters[l_light["current"]]["y"]
+
+			stream["links"].append(l_light)
+
+		streams.append(stream)
+	
+	return json.dumps(streams)
+
 @app.route('/data/tubes')
 def tubes():
 	return "tubes"
@@ -57,7 +110,7 @@ def clusters_metrolines():
 			cluster_light["label"] = cluster["cluster_label"]
 			cluster_light["id"] = cluster["cluster_univ_id"]
 			cluster_light["x"] = cluster["y_pos"]
-			cluster_light["y"] = cluster["pos_y"]
+			cluster_light["y"] = cluster["pos_y_t"]
 			cluster_light["w"] = cluster["width"]
 
 			t = cluster["period"].split("_")
