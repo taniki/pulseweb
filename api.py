@@ -18,14 +18,12 @@ def streams():
 		stream["clusters"] = []
 		stream["links"] = []
 
-		stream_min_y = query_db('SELECT min(y_pos) FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.stream_id' % (s["stream_id"]));
-		stream_max_y = query_db('SELECT max(y_pos) FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.stream_id' % (s["stream_id"]));
+		# there is certainly a way to speed up this part
+		stream_min_max_y = query_db('SELECT min(y_pos), max(y_pos) FROM clusters, positions_metrolines_cam WHERE clusters.stream_id = %i AND clusters.cluster_univ_id = positions_metrolines_cam.cluster_univ_id GROUP BY clusters.stream_id' % (s["stream_id"]));
 
-		if(stream_min_y):
-			stream["min_y"] = stream_min_y[0]["min(y_pos)"]
-
-		if(stream_max_y):
-			stream["max_y"] = stream_max_y[0]["max(y_pos)"]
+		if(stream_min_max_y):
+			stream["min_y"] = stream_min_max_y[0]["min(y_pos)"]
+			stream["max_y"] = stream_min_max_y[0]["max(y_pos)"]
 			stream["height"]= stream["max_y"] - stream["min_y"] + 1
 
 		clusters = {}
