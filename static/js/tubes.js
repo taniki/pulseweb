@@ -21,8 +21,6 @@ var global_move = { x:0, y:0 }
 var global_scale = 1;
 var global_scale_motion = 0;
 
-var origin;
-
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
@@ -97,16 +95,8 @@ function pan_of(x,y){
 function pan_to_cluster(cluster){
 	var c = clusters[cluster["id"]];
 
-	var x = view.center.x - origin.position.x - c["x"] * global_scale; //parseInt( view.size.width  / 2 );
-	var y = view.center.y - origin.position.y - c["y"] * global_scale; //parseInt( view.size.height / 2 );
-
-	console.log("cluster position: " + [c.x, c.y]  );
-	console.log("origin position: " + [origin.position.x, origin.position.y]  );
-	console.log("view center: " + [view.center.x, view.center.y]  );
-	console.log("diff: "+ [view.center.x -x , view.center.y - y]);
-	console.log("-> ["+ x +","+ y +"]");
-
-	console.log( view.size );
+	var x = view.center.x - c["path"]["position"]["x"]; //parseInt( view.size.width  / 2 );
+	var y = view.center.y - c["path"]["position"]["y"]; //parseInt( view.size.height / 2 );
 
 	///pan_of(x,y);
 
@@ -119,7 +109,7 @@ function zoom(factor){
 		global_scale += factor;
 
 		var coeff = 1 / (1 - factor);
-		var scale_center = new Point( 0, 0 );
+		var scale_center = view.center; //new Point( 0, 0 );
 	
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
@@ -134,7 +124,7 @@ function dezoom(factor){
 		global_scale -= factor;
 
 		var coeff = 1 - factor;
-		var scale_center = new Point( 0, 0 );
+		var scale_center = view.center; // new Point( 0, 0 );
 
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
@@ -210,10 +200,6 @@ function draw_distribution_articles_by_month(d){
 function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 		layer_clusters.activate();
-
-		origin = new Path.Circle( [0,0], 10);
-		origin.fillColor = "red";
-		origin.visible = false;
 
 		var cluster_box_width = 0;
 
