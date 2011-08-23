@@ -113,7 +113,7 @@ function zoom(factor){
 	
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
-		layer_background.scale( coeff,  scale_center);
+		layer_background.scale( coeff, [ scale_center.x, 0 ]);
 
 		console.log(global_scale);
 	}
@@ -128,7 +128,7 @@ function dezoom(factor){
 
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
-		layer_background.scale( coeff,  scale_center);
+		layer_background.scale( coeff, [ scale_center.x, 0 ]);
 
 		console.log(global_scale);
 	}
