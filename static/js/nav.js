@@ -36,6 +36,8 @@ metroline_view = Backbone.View.extend({
 	render: function() {
 		$(this.el).html(this.template(this.model.toJSON()));
 
+
+		$(this.el).addClass("stream_"+this.model.get("id"));
 		var title = this.model.get('title');
 		init_metroline_single(this.$("canvas")[0], this.model);
 
@@ -68,6 +70,10 @@ metrolines_nav = Backbone.View.extend({
 			var v = new metroline_view({ model: m });
 			this.$("#available").append(v.render().el);
 		});
+	},
+	
+	scrollTo: function(stream_id){
+		$("nav").scrollTop($("nav .stream_"+stream_id).position().top)
 	}
 });
 

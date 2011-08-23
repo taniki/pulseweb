@@ -45,6 +45,14 @@ window.onload = function() {
 	var tool = new Tool();
 
 	tool.onMouseDown = function(event) {
+	    var hitResult = project.hitTest(event.point);
+
+	    if (hitResult && hitResult.item && hitResult.item.cluster_id){
+			var c = clusters[hitResult.item.cluster_id];
+		
+			pan_to_cluster(c);
+			sidenav.scrollTo(c["stream"]);
+		}
 	}
 	
 	tool.onMouseDrag = function(event) {
@@ -80,7 +88,7 @@ window.onload = function() {
 			console.log( [ global_move["x"], global_move["y"] ]);
 
 			pan_of(global_move["x"], global_move["y"]);
-		}
+		}		
 	}
 }
 
@@ -93,7 +101,7 @@ function pan_of(x,y){
 }
 
 function pan_to_cluster(cluster){
-	var c = clusters[cluster["id"]];
+	var c = cluster;
 
 	var x = view.center.x - c["path"]["position"]["x"]; //parseInt( view.size.width  / 2 );
 	var y = view.center.y - c["path"]["position"]["y"]; //parseInt( view.size.height / 2 );
