@@ -73,7 +73,7 @@ metrolines_nav = Backbone.View.extend({
 	},
 	
 	scrollTo: function(stream_id){
-		$("nav").scrollTop($("nav .stream_"+stream_id).position().top)
+		$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
 	}
 });
 

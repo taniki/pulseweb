@@ -44,7 +44,7 @@ function draw_metroline_single(canvas, stream){
 
     c.clearRect(0,0,canvas.width,canvas.height);
 
-	var clusters = stream.get("clusters");
+	var _clusters = stream.get("clusters");
 	var links = stream.get("links");
 
 	links.forEach(function(link){
@@ -66,7 +66,7 @@ function draw_metroline_single(canvas, stream){
 		c.stroke();
 	});
 
-	clusters.forEach(function(cluster){
+	_clusters.forEach(function(cluster){
 		var x = parseInt( cluster["x"] * ( 220 - 12 - (cluster_radius * 2)) + 4 );
 		var y = parseInt( cluster["y"] * 20 + cluster_radius);
 
@@ -85,7 +85,7 @@ function draw_metroline_single(canvas, stream){
 		}
 
 		if(c.isPointInPath(mouseX, mouseY) && mouseDown){
-			pan_to_cluster(cluster);
+			pan_to_cluster(clusters[cluster["id"]]);
 		}
 
 		c.fillStyle = 'rgba(255,255,255,'+ alpha +')';

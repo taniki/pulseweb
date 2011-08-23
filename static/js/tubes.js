@@ -84,8 +84,6 @@ window.onload = function() {
 			// hahahahahahaarrrrggg
 			if (global_move["x"] == 1) global_move["x"] = 0
 			if (global_move["y"] == 1) global_move["y"] = 0
-			
-			console.log( [ global_move["x"], global_move["y"] ]);
 
 			pan_of(global_move["x"], global_move["y"]);
 		}		
@@ -122,8 +120,6 @@ function zoom(factor){
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
 		layer_background.scale( coeff, [ scale_center.x, 0 ]);
-
-		console.log(global_scale);
 	}
 }
 
@@ -137,8 +133,6 @@ function dezoom(factor){
 		layer_clusters.scale( coeff,  scale_center);
 		layer_links.scale( coeff,  scale_center);
 		layer_background.scale( coeff, [ scale_center.x, 0 ]);
-
-		console.log(global_scale);
 	}
 }
 
