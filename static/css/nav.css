@@ -1,5 +1,5 @@
 nav { position: absolute; top : 0px; right : 0px; width : 236px; border-left : 6px solid #7F7F85;  height : 100%; background : white; z-index : 2;  overflow-x : hidden; overflow-y : scroll;}
 
-nav div div { padding : 6px; border-bottom : 1px solid #CCCCCC; }
+nav div div { padding : 6px; border-bottom : 1px solid #dddddd; }
 nav div div h3 { font : normal 10px arial; color : #3A3A3A; }
 nav div div canvas { margin: 20px 0 0 0; }

@@ -18,6 +18,9 @@ var day_pixels = 2500 / 4198;
 
 var global_move = { x:0, y:0 }
 
+var global_scale = 1;
+var global_scale_motion = 0;
+
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
@@ -48,6 +51,18 @@ window.onload = function() {
 		//console.log("drag");
 		pan_of( event.delta.x , event.delta.y )
 	}
+	
+	tool.onKeyDown = function(e){
+		if(e.key == "+"){ 
+			zoom(0.1);
+		}
+		else if(e.key == "-"){
+			dezoom(0.1);
+		}
+	}	
+	
+	$(".viz .ui .zoom").click(function(e){ zoom(0.1); });
+	$(".viz .ui .dezoom").click(function(e){ dezoom(0.1); });
 	
 	view.onResize = function(e){
 //		layer_background;
@@ -84,13 +99,46 @@ function pan_to_cluster(cluster){
 	// console.log(layer_clusters.bounds);
 	// console.log(c);
 
-	var x = - c["x"] - layer_clusters.bounds.topLeft.x + parseInt( view.size.width  / 2 );
+	var x = - c["x"]  - layer_clusters.bounds.topLeft.x + parseInt( view.size.width  / 2 );
 	var y = - c["y"] - layer_clusters.bounds.topLeft.y + parseInt( view.size.height / 2 );
+
+	// x = x * global_scale;
+	// y = y * global_scale;
 
 	console.log("-> ["+ x +","+ y +"]");
 
 	global_move["x"] += x;
 	global_move["y"] += y;
+}
+
+function zoom(factor){
+	if(global_scale < 1){
+		global_scale += factor;
+
+		var coeff = 1 / (1 - factor);
+		var scale_center = new Point( 0, 0 );
+	
+		layer_clusters.scale( coeff,  scale_center);
+		layer_links.scale( coeff,  scale_center);
+		layer_background.scale( coeff,  scale_center);
+
+		console.log(global_scale);
+	}
+}
+
+function dezoom(factor){
+	if(global_scale > 0){
+		global_scale -= factor;
+
+		var coeff = 1 - factor;
+		var scale_center = new Point( 0, 0 );
+
+		layer_clusters.scale( coeff,  scale_center);
+		layer_links.scale( coeff,  scale_center);
+		layer_background.scale( coeff,  scale_center);
+
+		console.log(global_scale);
+	}
 }
 
 function draw_background(){
