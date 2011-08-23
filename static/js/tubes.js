@@ -21,6 +21,8 @@ var global_move = { x:0, y:0 }
 var global_scale = 1;
 var global_scale_motion = 0;
 
+var cluster_hover;
+
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
@@ -51,7 +53,31 @@ window.onload = function() {
 			var c = clusters[hitResult.item.cluster_id];
 		
 			pan_to_cluster(c);
-			sidenav.scrollTo(c["stream"]);
+			sidenav.select(c["stream"]);
+
+			for(var cluster in clusters){
+				clusters[cluster].selected = false;
+			}
+
+			hover_cluster(c);
+			c.selected = true;
+		}
+	}
+	
+	tool.onMouseMove = function(event) {
+	    var hitResult = project.hitTest(event.point);
+
+		cluster_hover = null
+
+		for(var c in clusters){
+//			clusters[c]["path"].fillColor.alpha = 0.6;
+			if( !clusters[c]["selected"]){
+				clusters[c]["path"].strokeColor	= null;
+			}
+		}
+
+	    if (hitResult && hitResult.item && hitResult.item.cluster_id){
+			hover_cluster(clusters[hitResult.item.cluster_id]);
 		}
 	}
 	
@@ -86,7 +112,11 @@ window.onload = function() {
 			if (global_move["y"] == 1) global_move["y"] = 0
 
 			pan_of(global_move["x"], global_move["y"]);
-		}		
+		}
+		
+		if(cluster_hover){
+			// clusters[cluster_hover]["path"].rotate(3);
+		}
 	}
 }
 
@@ -219,10 +249,17 @@ function get_clusters(){
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 				b.fillColor = colors_plain[ current["stream"] % colors_plain.length ];
+				b.strokeWidth = 0;
+
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#ffffff';
 				current['path'].fillColor.alpha = 0.6;
+				current['path'].strokeWidth = 0;
+				current['path'].strokeColor = null;
+				current['path'].main_color = b.fillColor;
+
+				current['path'].addChild(b);
 
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
@@ -258,6 +295,15 @@ function get_clusters(){
 
 		get_links();
 	});
+}
+
+function hover_cluster(cluster){
+	var p = cluster["path"];
+	
+	p.strokeWidth	= 3;
+	p.strokeColor	= p.main_color;
+	
+	cluster_hover = cluster["id"];
 }
 
 function get_links(){

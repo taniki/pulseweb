@@ -72,7 +72,9 @@ metrolines_nav = Backbone.View.extend({
 		});
 	},
 	
-	scrollTo: function(stream_id){
+	select: function(stream_id){
+		$("nav div div").removeClass("selected");
+		$("nav .stream_"+stream_id).addClass("selected");
 		$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
 	}
 });
