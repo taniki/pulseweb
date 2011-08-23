@@ -21,6 +21,8 @@ var global_move = { x:0, y:0 }
 var global_scale = 1;
 var global_scale_motion = 0;
 
+var origin;
+
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
@@ -100,15 +102,16 @@ function pan_to_cluster(cluster){
 		y: layer_clusters.bounds.size.height /2
 	}
 
-	var x = view.center.x - layer_clusters.position.x + (layer_center.x - c["x"] * global_scale); //parseInt( view.size.width  / 2 );
-	var y = view.center.y - layer_clusters.position.y + (layer_center.y - c["y"] * global_scale); //parseInt( view.size.height / 2 );
+	// var x = view.center.x - layer_clusters.position.x + (layer_center.x - c["x"] * global_scale); //parseInt( view.size.width  / 2 );
+	// var y = view.center.y - layer_clusters.position.y + (layer_center.y - c["y"] * global_scale); //parseInt( view.size.height / 2 );
 
-	// x = x * global_scale;
-	// y = y * global_scale;
+	var x = view.center.x - origin.position.x - c["x"] * global_scale; //parseInt( view.size.width  / 2 );
+	var y = view.center.y - origin.position.y - c["y"] * global_scale; //parseInt( view.size.height / 2 );
 
 	console.log("cluster position: " + [c.x, c.y]  );
 	console.log("layer center: " + [layer_center.x, layer_center.y]  );
 	console.log("layer position: " + [layer_clusters.position.x, layer_clusters.position.y]  );
+	console.log("origin position: " + [origin.position.x, origin.position.y]  );
 	console.log("view center: " + [view.center.x, view.center.y]  );
 	console.log("diff: "+ [view.center.x -x , view.center.y - y]);
 	console.log("-> ["+ x +","+ y +"]");
@@ -219,6 +222,10 @@ function get_clusters(){
 	$.getJSON("/data/clusters", {}, function(data){
 		layer_clusters.activate();
 
+		origin = new Path.Circle( [0,0], 10);
+		origin.fillColor = "red";
+		origin.visible = false;
+
 		var cluster_box_width = 0;
 
 	    data.forEach(function(c){
@@ -239,13 +246,7 @@ function get_clusters(){
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#ffffff';
 				current['path'].fillColor.alpha = 0.6;
-				
-				// current['path'].fillColor = colors_plain[ current["stream"] % colors_plain.length ];
-				// current['path'].fillColor.red = current['path'].fillColor.red - 0.6;
-				// current['path'].fillColor.blue = current['path'].fillColor.blue - 0.6;
-				// current['path'].fillColor.green = current['path'].fillColor.green - 0.6;
 
-				
 				current['label'] = new PointText( new Point(current['x'], current['y'] + 3 ));
 				current['label'].characterStyle = {
 					font: "verdana",
@@ -279,10 +280,6 @@ function get_clusters(){
 		layer_clusters.visible = true;
 
 		get_links();
-
-		var n = new Path.Circle( [ layer_clusters.bounds.size.width/2, layer_clusters.bounds.size.height/2 ], 50 );
-		n.fillColor = "black";
-
 	});
 }
 
