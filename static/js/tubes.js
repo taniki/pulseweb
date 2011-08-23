@@ -33,9 +33,9 @@ window.onload = function() {
 	var canvas = document.getElementById('tubes');
 	paper.setup(canvas);
 
-	layer_background = new Layer();
-	layer_clusters = new Layer();
-	layer_links = new Layer();
+	layer_background	= new Layer();
+	layer_clusters		= new Layer();
+	layer_links			= new Layer();
 
 	viz_elements = new Group;
 
@@ -52,15 +52,10 @@ window.onload = function() {
 	    if (hitResult && hitResult.item && hitResult.item.cluster_id){
 			var c = clusters[hitResult.item.cluster_id];
 		
+			select_cluster(c);
 			pan_to_cluster(c);
 			sidenav.select(c["stream"]);
 
-			for(var cluster in clusters){
-				clusters[cluster].selected = false;
-			}
-
-			hover_cluster(c);
-			c.selected = true;
 		}
 	}
 	
@@ -304,6 +299,15 @@ function hover_cluster(cluster){
 	p.strokeColor	= p.main_color;
 	
 	cluster_hover = cluster["id"];
+}
+
+function select_cluster(c){
+	for(var cluster in clusters){
+		clusters[cluster].selected = false;
+	}
+
+	hover_cluster(c);
+	c.selected = true;
 }
 
 function get_links(){
