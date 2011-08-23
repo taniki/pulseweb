@@ -95,20 +95,31 @@ function pan_of(x,y){
 function pan_to_cluster(cluster){
 	var c = clusters[cluster["id"]];
 
-	// console.log(layer_clusters.position);
-	// console.log(layer_clusters.bounds);
-	// console.log(c);
+	var layer_center = {
+		x: layer_clusters.bounds.size.width  /2,
+		y: layer_clusters.bounds.size.height /2
+	}
 
-	var x = - c["x"]  - layer_clusters.bounds.topLeft.x + parseInt( view.size.width  / 2 );
-	var y = - c["y"] - layer_clusters.bounds.topLeft.y + parseInt( view.size.height / 2 );
+	var x = view.center.x - layer_clusters.position.x + (layer_center.x - c["x"] * global_scale); //parseInt( view.size.width  / 2 );
+	var y = view.center.y - layer_clusters.position.y + (layer_center.y - c["y"] * global_scale); //parseInt( view.size.height / 2 );
 
 	// x = x * global_scale;
 	// y = y * global_scale;
 
+	console.log("cluster position: " + [c.x, c.y]  );
+	console.log("layer center: " + [layer_center.x, layer_center.y]  );
+	console.log("layer position: " + [layer_clusters.position.x, layer_clusters.position.y]  );
+	console.log("view center: " + [view.center.x, view.center.y]  );
+	console.log("diff: "+ [view.center.x -x , view.center.y - y]);
 	console.log("-> ["+ x +","+ y +"]");
 
-	global_move["x"] += x;
-	global_move["y"] += y;
+	console.log( view.size );
+
+	pan_of(x,y);
+
+
+	// global_move["x"] += x;
+	// global_move["y"] += y;
 }
 
 function zoom(factor){
@@ -268,6 +279,9 @@ function get_clusters(){
 		layer_clusters.visible = true;
 
 		get_links();
+
+		var n = new Path.Circle( [ layer_clusters.bounds.size.width/2, layer_clusters.bounds.size.height/2 ], 50 );
+		n.fillColor = "black";
 
 	});
 }
