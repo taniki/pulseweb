@@ -55,7 +55,7 @@ window.onload = function() {
 			select_cluster(c);
 			pan_to_cluster(c);
 			sidenav.select(c["stream"]);
-
+			explorer.load_cluster(c["id"])
 		}
 	}
 	

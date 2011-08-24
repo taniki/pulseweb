@@ -6,7 +6,7 @@ var metroline_view;
 var metrolines_nav;
 
 var nav_step	= 0;
-var nav_width	= [ 236, 466 ];
+var nav_width	= [0, 236, 236*3 -6 ];
 
 $(document).ready(function(){
 
@@ -84,40 +84,33 @@ metrolines_nav = Backbone.View.extend({
 
 window.sidenav = new metrolines_nav;
 
-$(".container").height($(".container").height() - 18 +"px");
+$(".container").height($(".container").height() - 24 +"px");
 
 $(".more").click(function(){
 	if(nav_step < nav_width.length){
-		var offset = nav_width[nav_step];
-
-		$("#main").animate({
-			right: "+="+offset
-		}, "slow",
-		function(){
-			$("#main .ui").animate({
-				left: "+="+offset
-			}, "slow");
-		});
-	
-		nav_step += 1;
+		go_to_nav_step(nav_step+1);
 	}
 });
 
 $(".less").click(function(){
-	if(nav_step >= 0){
-		nav_step -= 1;
-		var offset = nav_width[nav_step];
-
-		$("#main").animate({
-			right: "-="+offset
-		}, "slow",
-		function(){
-			$("#main .ui").animate({
-				left: "-="+offset
-			}, "slow");
-		});
+	if(nav_step > 0){
+		go_to_nav_step(nav_step-1);
 	}
 });
 
 });
 
+function go_to_nav_step(step){
+	nav_step = step;
+	
+	var pos = -702 + nav_width[step];
+	
+	$("#main").animate({
+		right: pos
+	}, "slow",
+	function(){
+		$("#main .ui").animate({
+			left: nav_width[step] - 32 + 236
+		}, "slow");
+	});
+}
