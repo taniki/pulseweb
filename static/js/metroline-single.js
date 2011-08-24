@@ -87,6 +87,8 @@ function draw_metroline_single(canvas, stream){
 		if(c.isPointInPath(mouseX, mouseY) && mouseDown){
 			select_cluster(clusters[cluster["id"]]);
 			pan_to_cluster(clusters[cluster["id"]]);
+			
+			sidenav.select(stream["id"]);
 		}
 
 		c.fillStyle = 'rgba(255,255,255,'+ alpha +')';
