@@ -87,14 +87,14 @@ window.sidenav = new metrolines_nav;
 $(".container").height($(".container").height() - 24 +"px");
 
 $(".more").click(function(){
-	if(nav_step < nav_width.length){
-		go_to_nav_step(nav_step+1);
+	if(nav_step > 0){
+		go_to_nav_step(nav_step-1);
 	}
 });
 
 $(".less").click(function(){
-	if(nav_step > 0){
-		go_to_nav_step(nav_step-1);
+	if(nav_step < nav_width.length){
+		go_to_nav_step(nav_step+1);
 	}
 });
 
