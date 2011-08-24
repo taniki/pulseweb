@@ -37,8 +37,9 @@ metroline_view = Backbone.View.extend({
 		$(this.el).html(this.template(this.model.toJSON()));
 
 
+		$(this.el).addClass("item");
 		$(this.el).addClass("stream_"+this.model.get("id"));
-		var title = this.model.get('title');
+		var title = "stream "+this.model.get("id")+": "+this.model.get("title");
 		init_metroline_single(this.$("canvas")[0], this.model);
 
 		this.$('h3').text(title);

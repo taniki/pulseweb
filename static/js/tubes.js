@@ -240,6 +240,7 @@ function get_clusters(){
 
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
 				current['stream'] = c["stream_id"];
+				current['id'] = c["id"];
 
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
@@ -295,8 +296,9 @@ function get_clusters(){
 function hover_cluster(cluster){
 	var p = cluster["path"];
 	
-	p.strokeWidth	= 3;
-	p.strokeColor	= p.main_color;
+	p.strokeWidth		= 10;
+	p.strokeColor		= "#444";
+	p.strokeColor.alpha	= 0.7;
 	
 	cluster_hover = cluster["id"];
 }
@@ -308,6 +310,8 @@ function select_cluster(c){
 
 	hover_cluster(c);
 	c.selected = true;
+	
+	//console.log(c);
 }
 
 function get_links(){
@@ -369,7 +373,8 @@ function get_links(){
 
 //		layer_clusters.scale(0.5, new Point(0, 0));
 //		layer_links.scale(0.5, new Point(0, 0));
-		pan_of(-1500, -300);
+//		pan_of(-1500, -300);
+		pan_to_cluster(clusters[158]);
 
 		view.draw();
 	});	

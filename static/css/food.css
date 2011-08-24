@@ -2,9 +2,6 @@
 
 body { overflow : hidden; }
 
-.container { text-align : center; width : 100%; overflow : hidden; }
-.content { text-align : left; width : 960px; margin : 0 auto;}
-
 header { position : absolute; bottom : 30px; background : white; padding : 8px 20px; 
 	-moz-box-shadow:0px 0px 8px #000000;
 	-webkit-box-shadow:0px 0px 8px #000000;
@@ -17,6 +14,10 @@ h1 { font : bold 30px/36px "Varela", sans-serif;  }
 
 canvas { margin : 0; }
 
+.container { height : 100%;  overflow-x : hidden; overflow-y : scroll; background : white; }
+.container .item:hover { background-color : #EAFFFF; }
+.container .item.selected { background-color : #E4F8FF; }
+
 #big_viz { position: absolute; top : 0px; left : 0px; height : 100%; z-index : -1;}
 
 .viz .ui { position : absolute; bottom : 22px; left : 22px; display : block; height : 32px; background : #333; z-index : 0; border-radius : 3px; border: 1px solid #7F7F85;}
@@ -27,6 +28,26 @@ canvas { margin : 0; }
 .viz .ui div.dezoom { background-position : -32px 0; }
 
 #tubes {  }
+
+nav { position: absolute; top : 0px; right : 0px; width : 236px; border-left : 6px solid #333;  height : 100%; z-index : 2; }
+
+nav div div { padding : 6px; border-bottom : 1px solid #dddddd; }
+
+nav div div h3 { font : normal 10px arial; color : #3A3A3A; }
+nav div div canvas { margin: 20px 0 0 0; }
+
+#explorer { display: none; position : absolute; top : 0; left : 0; background : #333; z-index : 0; height : 330px; padding : 3px 0px 3px 3px; }
+
+#explorer ul { float : left; }
+#explorer .container { width : 236px; }
+#explorer #current_articles { width : 466px; }
+
+#explorer .container li { font : normal 12px/12px arial; color : #3A3A3A; padding : 6px 3px; border-bottom :  1px solid #dddddd;}
+#explorer .container li .count { color : #777; float : right;}
+
+#explorer #current_articles h4 { font: bold 16px/16px arial; color : #3A3A3A; }
+#explorer #current_articles .source { font: normal 12px/12px arial; color : #777; margin-top: 2px; margin-bottom: 6px; }
+#explorer #current_articles .body { font: normal 12px/18px arial; color : #3A3A3A; }
 
 ::-webkit-scrollbar {
 width: 10px;
@@ -41,13 +62,12 @@ background-color: transparent;
 }
 
 ::-webkit-scrollbar-track-piece  {
-background-color: transparent;
--webkit-border-radius: 6px;
+background-color: #333;
 }
 
 ::-webkit-scrollbar-thumb:vertical {
 height: 50px;
 background-color: #7F7F85;
-border: 1px solid #fff;
+border: 3px solid #333;
 -webkit-border-radius: 6px;
 }

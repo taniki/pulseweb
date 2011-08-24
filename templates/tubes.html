@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='js/tubes.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/nav.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/metroline-single.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/explorer.js') }}"></script>
+
 </head>
 <body>
 	<header>
@@ -32,15 +34,31 @@
 		</div>
 	</div>
 	
-	<nav>
+	<nav class="container">
 		<div id="selected"></div>
 		<div id="available"></div>
 	</nav>
 	
+	<div id="explorer">
+		<ul id="current_terms" class="container"></ul>
+		<ul id="current_articles" class="container"></ul>
+	</div>
+
 <!-- JS templates -->
 <script type="text/template" id="metroline-item">
 <h3></h3>
 <canvas class="local_view" width="1" height="1"></canvas>
+</script>
+
+<script type="text/template" id="term-item">
+<span class="label"></span>
+<span class="count"></span>
+</script>
+
+<script type="text/template" id="article-item">
+<h4></h4>
+<div class="source"></div>
+<div class="body"></div>
 </script>
 
 </body>

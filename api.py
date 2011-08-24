@@ -10,7 +10,9 @@ import simplejson as json
 def streams():
 	streams = []
 	
-	for s in query_db('select * from clusters group by stream_id'):
+	for s in query_db('select *, count(distinct period) as period_count from clusters group by stream_id'):
+		if s["period_count"] == 1 : continue
+
 		stream = {}
 
 		stream["id"] = s["stream_id"]	
@@ -68,7 +70,7 @@ def clusters():
 	resp = cache.get("clusters")
 
 	if resp is None:
-		for cluster in query_db('select * from clusters group by cluster_univ_id'):
+		for cluster in query_db('SELECT *, count(distinct period) as c FROM clusters GROUP BY cluster_univ_id'):
 		
 			# Reduction des donnees transferees 1.4 mo -> 230 ko
 			cluster_light = {}
@@ -90,6 +92,32 @@ def clusters():
 
 		resp = clusters
         cache.set('clusters', resp, timeout=5 * 60)
+
+	return json.dumps(resp)
+
+@app.route('/data/cluster/<int:cluster_id>')
+def cluster_info(cluster_id):
+	resp = []
+	
+	for t in query_db('SELECT * FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC' % int(cluster_id) ):
+		term = {}
+		
+		term["id"] = t["id0"]
+		term["label"] = t["term"]
+		term["count_articles"] = int( t["width"] * t["weight"] )
+		
+		resp.append(term)
+	
+	return json.dumps(resp)
+
+@app.route('/data/cluster/<int:cluster_id>/term/<term_id>')
+def cluster_term_articles(cluster_id, term_id):
+	resp = []
+
+	for t in query_db('SELECT * FROM articles2terms WHERE terms_id = "%s" ' % term_id ):
+		resp.append(t["wos_id"])
+
+	resp = sorted ( set(resp) )
 
 	return json.dumps(resp)
 
@@ -144,6 +172,16 @@ def meta():
 	# (SELECT * FROM clusters GROUP BY cluster_univ_id)
 	# GROUP BY pos_y
 	pass
+
+@app.route("/data/article/<article_id>")
+def get_article(article_id):
+	resp = {}
+	
+	resp["title"] = "lorem ipsum"
+	resp["source"] = "lorem ipsum"
+	resp["content"] = "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment."
+
+	return json.dumps(resp)
 
 @app.route("/data/distribution/articles/by_month")
 def articles_month():
