@@ -17,9 +17,14 @@ function init_metroline_single(canvas, stream){
 
 	draw_metroline_single(canvas, stream);
 	
-	canvas.addEventListener("mousemove", function(e){
+	canvas.addEventListener("mousemove", function(e){		
 		mouseX = e.offsetX;
 		mouseY = e.offsetY;
+		
+		if(!mouseX){
+			mouseX = e.pageX - $(canvas).offset().left ;
+			mouseY = e.pageY - $(canvas).offset().top ;
+		}
 		
 		draw_metroline_single(canvas, stream);
 	});
@@ -28,6 +33,11 @@ function init_metroline_single(canvas, stream){
 
 		mouseX = e.offsetX;
 		mouseY = e.offsetY;
+
+		if(!mouseX){
+			mouseX = e.pageX - $(canvas).offset().left ;
+			mouseY = e.pageY - $(canvas).offset().top ;
+		}
 		
 		mouseDown = true;
 		
