@@ -1,4 +1,5 @@
 var cluster_radius = 4;
+var select_radius = 4;
 
 var mouseX;
 var mouseY;
@@ -8,7 +9,7 @@ var mouseDown = false;
 function init_metroline_single(canvas, stream){
 
 	$(canvas).attr("width", 220-12);
-	$(canvas).attr("height", 20 * stream.get("height") );
+	$(canvas).attr("height", 20 * stream.get("height") + select_radius * 2);
 
 	if(isNaN(stream.get("height"))){
 		$(canvas).attr("height", 10 );
@@ -17,7 +18,6 @@ function init_metroline_single(canvas, stream){
 	draw_metroline_single(canvas, stream);
 	
 	canvas.addEventListener("mousemove", function(e){
-
 		mouseX = e.offsetX;
 		mouseY = e.offsetY;
 		
@@ -36,7 +36,17 @@ function init_metroline_single(canvas, stream){
 		mouseDown = false;
 	});
 	
+	$(canvas).bind('select', function(){
+		draw_metroline_single(canvas, stream);
+	});
+	
 	return canvas;
+}
+
+function update_all_metrolines(){
+	mouseDown = false;
+
+	$(".local_view").trigger("select");
 }
 
 function draw_metroline_single(canvas, stream){
@@ -52,11 +62,11 @@ function draw_metroline_single(canvas, stream){
 
 		c.beginPath();
 
-		var start_x = parseInt( link["start"]["x"] * ( 220 - 12 - (cluster_radius * 2) )  + cluster_radius);
-		var start_y = parseInt( link["start"]["y"] * 20 + cluster_radius);
+		var start_x = parseInt( link["start"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius);
+		var start_y = parseInt( link["start"]["y"] * 20 + cluster_radius + select_radius);
 
-		var end_x = parseInt( link["end"]["x"] * ( 220 - 12 - (cluster_radius * 2) )  + cluster_radius);
-		var end_y = parseInt( link["end"]["y"] * 20 + cluster_radius);
+		var end_x = parseInt( link["end"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius);
+		var end_y = parseInt( link["end"]["y"] * 20 + cluster_radius + select_radius);
 		
 		c.moveTo(start_x, start_y);
 		c.lineTo(end_x, end_y);
@@ -64,16 +74,30 @@ function draw_metroline_single(canvas, stream){
 		c.lineWidth = 8;
 		c.strokeStyle = colors_plain[ stream.get("id") % colors_plain.length ];
 		c.stroke();
+		c.closePath();
+
 	});
 
 	_clusters.forEach(function(cluster){
-		var x = parseInt( cluster["x"] * ( 220 - 12 - (cluster_radius * 2)) + 4 );
-		var y = parseInt( cluster["y"] * 20 + cluster_radius);
+		var x = parseInt( cluster["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2)) + 4 );
+		var y = parseInt( cluster["y"] * 20 + cluster_radius + select_radius );
+
+		if(selected.cluster == cluster["id"] && selected.stream == stream.get("id")){
+			c.beginPath();
+			c.arc(x, y, cluster_radius, 0, Math.PI*2,true);
+
+			c.lineWidth = select_radius;
+			c.strokeStyle = 'rgba(44,44,44, 0.7)';
+			c.stroke();
+
+			c.closePath();
+		}
 
 		c.beginPath();
 		c.arc(x, y, cluster_radius, 0, Math.PI*2,true);
 		c.fillStyle = colors_plain[ stream.get("id") % colors_plain.length ];
 		c.fill();
+		c.closePath();
 
 		c.beginPath();
 		c.arc(x, y, cluster_radius, 0, Math.PI*2,true);
@@ -94,6 +118,8 @@ function draw_metroline_single(canvas, stream){
 
 		c.fillStyle = 'rgba(255,255,255,'+ alpha +')';
 		c.fill();
+
+		c.closePath();
 	});
 
 	return canvas;

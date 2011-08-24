@@ -23,6 +23,12 @@ var global_scale_motion = 0;
 
 var cluster_hover;
 
+var selected = {
+	stream: 0,
+	cluster: 0
+};
+
+
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
@@ -311,7 +317,11 @@ function select_cluster(c){
 	hover_cluster(c);
 	c.selected = true;
 	
-	//console.log(c);
+	selected.stream = c["stream"];
+	selected.cluster = c["id"];
+	
+	update_all_metrolines();
+//	console.log(c);
 }
 
 function get_links(){

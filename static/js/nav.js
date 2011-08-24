@@ -113,4 +113,8 @@ function go_to_nav_step(step){
 			left: nav_width[step] - 32 + 236
 		}, "slow");
 	});
+	$("#big_viz canvas").animate({
+		left: - parseInt(nav_width[step]/2)
+	}, "slow");
+
 }
