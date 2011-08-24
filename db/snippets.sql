@@ -9,3 +9,7 @@ SELECT DISTINCT wos_id as id,
 (SELECT data FROM headline WHERE id = articles2terms.wos_id) as title,
 (SELECT data FROM leadParagraph WHERE id = articles2terms.wos_id) as abstract
 FROM articles2terms
+
+# De l'optimisation pour les champions
+
+CREATE UNIQUE INDEX articles_id_idx ON articles(id)
