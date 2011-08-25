@@ -96,20 +96,20 @@ app_routes = Backbone.Router.extend({
 		pan_to_cluster(clusters[158]);
 	},
 	
-	focus_cluster: function(cluster_id){
+	focus_cluster: function(cluster_id, silent){
 //		console.log("route : cluster/:cluster_id param:"+ cluster_id);
 		var c = clusters[cluster_id];
 		
 		select_cluster(c);
 		pan_to_cluster(c);
 		sidenav.select(c["stream"]);
-		explorer.load_cluster(c["id"]);
+		explorer.load_cluster(c["id"], silent);
 	},
 	
 	focus_cluster_term: function(cluster_id, term_id){
 //		console.log("route : cluster/:cluster_id param:"+ cluster_id);
-		this.focus_cluster(cluster_id);
-		load_term(cluster_id, term_id)
+		this.focus_cluster(cluster_id, true);
+		explorer.load_term(cluster_id, term_id)
 	}
 });
 

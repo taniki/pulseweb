@@ -161,13 +161,15 @@ explorer_view = Backbone.View.extend({
 		go_to_nav_step(2);
 	},
 	
-	load_cluster: function(cluster_id){
+	load_cluster: function(cluster_id, silent){
 		$.getJSON('/data/cluster/'+cluster_id, function(data){
 			terms.reset();
 			terms.add(data, {silent: true});
 			explorer.draw_terms();
 			
-			router.navigate("cluster/"+cluster_id);
+			if(!silent){
+				router.navigate("cluster/"+cluster_id);
+			}
 			// terms.first().trigger("click");
 		});
 	},
