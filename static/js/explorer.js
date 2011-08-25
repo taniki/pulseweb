@@ -181,12 +181,12 @@ explorer_view = Backbone.View.extend({
 		/* loading */
 		this.$("#current_articles").html('<div class="loader"><img src="/static/images/loader.gif" /></div>');
 
-		$.getJSON('/data/cluster/'+cluster_id+'/term/'+term_id, function(data){
+		$.getJSON('/data/cluster/'+cluster_id+'/term/'+term_id+"/full", function(data){
 			var c = [];
 
 			data.forEach(function(_article){
-				var a = new article({id: _article});
-				a.fetch();
+				var a = new article(_article);
+//				a.fetch();
 				
 				c.push(a);
 			});

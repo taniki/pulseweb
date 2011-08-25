@@ -127,6 +127,22 @@ def cluster_term_articles(cluster_id, term_id):
 
 	return json.dumps(resp)
 
+@app.route('/data/cluster/<int:cluster_id>/term/<term_id>/full')
+def cluster_term_articles_full(cluster_id, term_id):
+	resp = []
+
+	a = []
+
+	for t in query_db('SELECT * FROM articles2terms WHERE terms_id = "%s" ' % term_id ):
+		a.append(t["wos_id"])
+
+	a = sorted ( set(a) )
+
+	for article in query_db('SELECT * FROM articles WHERE id IN (%s)' % (','.join(a)) ):
+		resp.append(row_to_article(article));
+
+	return json.dumps(resp)
+
 @app.route('/data/clusters/positions/metrolines')
 def clusters_metrolines():
 	clusters = []
@@ -179,21 +195,28 @@ def meta():
 	# GROUP BY pos_y
 	pass
 
+def row_to_article(r):
+	o = {}
+	
+	o["title"] = r["title"]
+	o["source"] =  r["source"]
+	o["author"] =  r["author"]
+	o["lang"] =  r["lang"]
+	# o["date_offset"] =  date.fromtimestamp( 946681200 ).strftime("%d/%m/%Y")
+	# 946681200
+	# 978306360
+	o["date"] =  date.fromtimestamp( 946681200 + int(r["date"]) * 86400 ).strftime("%d/%m/%Y")
+	o["content"] =  r["abstract"]
+
+	return o
+
 @app.route("/data/article/<int:article_id>")
 def get_article(article_id):
 	resp = {}
 
 	a = query_db('SELECT * FROM articles WHERE id=%i' % article_id)[0]
 	
-	resp["title"] = a["title"]
-	resp["source"] =  a["source"]
-	resp["author"] =  a["author"]
-	resp["lang"] =  a["lang"]
-	# resp["date_offset"] =  date.fromtimestamp( 946681200 ).strftime("%d/%m/%Y")
-	# 946681200
-	# 978306360
-	resp["date"] =  date.fromtimestamp( 946681200 + int(a["date"]) * 86400 ).strftime("%d/%m/%Y")
-	resp["content"] =  a["abstract"]
+	resp = row_to_article(a)
 
 	# 1314262254.484391
 	# 9783063600
