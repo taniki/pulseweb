@@ -48,12 +48,14 @@ term_view = Backbone.View.extend({
 	initialize: function(){
 		this.model.bind("change", this.render, this);
 		this.model.bind("click", this.open, this);
+		this.model.bind("selected", this.selected, this);
 	},
 	
 	render: function(){
 		$(this.el).html(this.template(this.model.toJSON()));
 
 		$(this.el).addClass("item");
+		$(this.el).addClass("term_"+this.model.get("id"));
 
 		var label = this.model.get("label");
 		var count = this.model.get("count_articles");
@@ -68,9 +70,13 @@ term_view = Backbone.View.extend({
 		"click": "open" 
 	},
 	
-	open: function(){
+	selected : function(){
 		$("#current_terms .item").removeClass("selected");
 		$(this.el).addClass("selected");
+	},
+	
+	open: function(){
+		this.selected();
 		explorer.load_term( this.model.get("cluster_id"), this.model.get("label") );
 	}
 });
@@ -148,6 +154,8 @@ explorer_view = Backbone.View.extend({
 			var v = new term_view({ model: t });
 			this.$("#current_terms").append(v.render().el);
 		});
+		
+		terms.trigger("loaded");
 	},
 
 	draw_articles: function(){
@@ -181,6 +189,13 @@ explorer_view = Backbone.View.extend({
 		router.navigate("cluster/"+cluster_id+"/term/"+term_id);
 
 		go_to_nav_step(2);
+
+		terms.bind("loaded",function(c){
+			terms.models.forEach(function(t){
+				if(t.get("label") == term_id){ t.trigger("selected"); }
+			});
+			terms.unbind("loaded");
+		});
 
 		/* loading */
 		this.$("#current_articles").html('<div class="loader"><img src="/static/images/loader.gif" /></div>');
