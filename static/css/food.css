@@ -51,12 +51,12 @@ nav div div canvas { margin: 10px 0 0 0; }
 #explorer .container { width : 236px; }
 #explorer #current_articles { width : 466px; }
 
-#explorer .container li { font : normal 12px/12px arial; color : #3A3A3A; padding : 6px 3px; border-bottom :  1px solid #dddddd;}
+#explorer .container li { font : normal 12px/12px arial; color : #3A3A3A; padding : 6px 9px; border-bottom :  1px solid #dddddd;}
 #explorer .container li .count { color : #777; float : right;}
 
 #explorer #current_articles h4 { font: bold 16px/16px arial; color : #3A3A3A; }
-#explorer #current_articles .source { font: normal 12px/12px arial; color : #777; margin-top: 2px; margin-bottom: 6px; }
-#explorer #current_articles .body { font: normal 12px/18px arial; color : #3A3A3A; }
+#explorer #current_articles .info_publication { font: normal 12px/12px arial; color : #777; margin-top: 4px; margin-bottom: 6px; }
+#explorer #current_articles .body { font: normal 12px/20px arial; color : #3A3A3A; }
 
 ::-webkit-scrollbar {
 width: 10px;

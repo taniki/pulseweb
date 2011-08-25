@@ -15,6 +15,10 @@ var explorer_view;
 
 $(document).ready(function(){
 
+// var date_offset = new Date("1 Jan 2000 00:00:00");
+// 
+// console.log(date_offset.getTime() );
+
 term = Backbone.Model.extend({
 	urlRoot: "/data/term", 
 	defaults: {
@@ -28,6 +32,8 @@ article = Backbone.Model.extend({
 	defaults: {
 		title: "title",
 		content: "content",
+		author: "John Doe",
+		lang: "EN",
 		source: "source"
 	}
 });
@@ -81,9 +87,19 @@ article_view = Backbone.View.extend({
 
 		var title = this.model.get("title");
 		var source = this.model.get("source");
+		
+		// var d = new Date(date_offset.getTime() + this.model.get("date") * 1440000);
+		// 
+		// var date = '%02d/%02d/%04d'.sprintf( d.getDate(), d.getMonth()+1, d.getFullYear());
+
+		var date = this.model.get("date");
+		var lang = this.model.get("lang");
+		var author = this.model.get("author");
 		var content = this.model.get("content");
 
 		this.$('h4').text(title);
+		this.$('.date').text(date);
+		this.$('.author').text(author);
 		this.$('.source').text(source);
 		this.$('.body').text(content);
 

@@ -2,9 +2,14 @@ from pulseweb import app
 from pulseweb.db import query_db
 from werkzeug.contrib.cache import SimpleCache
 
+import time
+from datetime import date
+
 cache = SimpleCache()
 
 import simplejson as json
+
+# date_offset = 
 
 @app.route('/data/streams')
 def streams():
@@ -181,8 +186,16 @@ def get_article(article_id):
 	
 	resp["title"] = a["title"]
 	resp["source"] =  a["source"]
+	resp["author"] =  a["author"]
+	resp["lang"] =  a["lang"]
+	# resp["date_offset"] =  date.fromtimestamp( 946681200 ).strftime("%d/%m/%Y")
+	# 946681200
+	# 978306360
+	resp["date"] =  date.fromtimestamp( 946681200 + int(a["date"]) * 86400 ).strftime("%d/%m/%Y")
 	resp["content"] =  a["abstract"]
 
+	# 1314262254.484391
+	# 9783063600
 	return json.dumps(resp)
 
 @app.route("/data/distribution/articles/by_month")
