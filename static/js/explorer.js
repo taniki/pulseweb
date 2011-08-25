@@ -149,7 +149,7 @@ explorer_view = Backbone.View.extend({
 	},
 
 	draw_articles: function(){
-		console.log(articles);
+//		console.log(articles);
 		
 		this.$("#current_articles").empty();
 		
@@ -157,7 +157,7 @@ explorer_view = Backbone.View.extend({
 			var v = new article_view({ model: t });
 			this.$("#current_articles").append(v.render().el);
 		});
-		
+
 		go_to_nav_step(2);
 	},
 	
@@ -174,6 +174,11 @@ explorer_view = Backbone.View.extend({
 
 	load_term: function(cluster_id, term_id){
 		router.navigate("cluster/"+cluster_id+"/term/"+term_id);
+
+		go_to_nav_step(2);
+
+		/* loading */
+		this.$("#current_articles").html('<div class="loader"><img src="/static/images/loader.gif" /></div>');
 
 		$.getJSON('/data/cluster/'+cluster_id+'/term/'+term_id, function(data){
 			var c = [];
