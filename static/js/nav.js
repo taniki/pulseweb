@@ -69,6 +69,12 @@ metrolines_nav = Backbone.View.extend({
 		metrolines.bind("reset", this.reset, this);
 		
 		metrolines.fetch();
+		
+		nav_is_ready = true;
+
+		if(viz_is_ready){
+			Backbone.history.start({pushState: true, root: "/tubes/"});
+		}
 	},
 	
 	reset: function(l){		
@@ -134,12 +140,6 @@ $(".less").click(function(){
 });
 
 router = new app_routes();
-
-nav_is_ready = true;
-
-if(viz_is_ready){
-	Backbone.history.start({pushState: true, root: "/tubes/"});
-}
 
 });
 
