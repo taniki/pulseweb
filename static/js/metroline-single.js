@@ -55,6 +55,8 @@ function init_metroline_single(canvas, stream){
 
 function update_all_metrolines(){
 	mouseDown = false;
+	mouseX = -1;
+	mouseY = -1;
 
 	$(".local_view").trigger("select");
 }
