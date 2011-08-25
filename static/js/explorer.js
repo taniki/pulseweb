@@ -73,6 +73,8 @@ term_view = Backbone.View.extend({
 	selected : function(){
 		$("#current_terms .item").removeClass("selected");
 		$(this.el).addClass("selected");
+		
+		$("#current_terms").scrollTop($(this.el).position().top);
 	},
 	
 	open: function(){

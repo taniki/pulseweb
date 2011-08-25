@@ -80,6 +80,8 @@ metrolines_nav = Backbone.View.extend({
 			var v = new metroline_view({ model: m });
 			this.$("#available").append(v.render().el);
 		});
+		
+		metrolines.trigger("loaded");
 	},
 	
 	select: function(stream_id){
@@ -87,9 +89,7 @@ metrolines_nav = Backbone.View.extend({
 		$("nav .stream_"+stream_id).addClass("selected");
 		
 		// FIXME provoking a bug when the nav is not yet loaded. ex: routing
-		if($("nav .stream_"+stream_id).position()){
-			$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
-		}
+		$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
 	}	
 });
 
@@ -138,6 +138,16 @@ $(".less").click(function(){
 });
 
 router = new app_routes();
+
+metrolines.bind("loaded", function(){
+	nav_is_ready = true;
+	
+	if(viz_is_ready){
+		Backbone.history.start({pushState: true, root: "/tubes/"});
+	}
+	
+	metrolines.unbind("loaded");
+});
 
 });
 
