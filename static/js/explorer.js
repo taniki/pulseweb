@@ -144,8 +144,6 @@ explorer_view = Backbone.View.extend({
 			var v = new term_view({ model: t });
 			this.$("#current_terms").append(v.render().el);
 		});
-		
-		this.show_terms();
 	},
 
 	draw_articles: function(){
@@ -169,6 +167,7 @@ explorer_view = Backbone.View.extend({
 			
 			if(!silent){
 				router.navigate("cluster/"+cluster_id);
+				explorer.show_terms();
 			}
 			// terms.first().trigger("click");
 		});
