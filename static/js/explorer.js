@@ -13,6 +13,8 @@ var articles_collection;
 var explorer;
 var explorer_view;
 
+var selected_term = null;
+
 $(document).ready(function(){
 
 // var date_offset = new Date("1 Jan 2000 00:00:00");
@@ -67,6 +69,8 @@ term_view = Backbone.View.extend({
 	},
 	
 	open: function(){
+		$("#current_terms .item").removeClass("selected");
+		$(this.el).addClass("selected");
 		explorer.load_term( this.model.get("cluster_id"), this.model.get("label") );
 	}
 });
