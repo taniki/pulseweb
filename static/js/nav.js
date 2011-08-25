@@ -69,8 +69,6 @@ metrolines_nav = Backbone.View.extend({
 		metrolines.bind("reset", this.reset, this);
 		
 		metrolines.fetch();
-		
-		nav_is_ready = true;
 	},
 	
 	reset: function(l){		
