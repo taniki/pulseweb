@@ -321,6 +321,7 @@ function hover_cluster(cluster){
 function select_cluster(c){
 	for(var cluster in clusters){
 		clusters[cluster].selected = false;
+		clusters[cluster]["path"].strokeColor	= null;
 	}
 
 	hover_cluster(c);
