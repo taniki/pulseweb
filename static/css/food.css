@@ -12,15 +12,17 @@ canvas { margin : 0; }
 .container .item:hover { background-color : #EAFFFF; }
 .container .item.selected { background-color : #E4F8FF; }
 
-#big_viz { position: absolute; top : 0px; left : 0px; height : 100%; z-index : -1; overflow : hidden;}
+#big_viz { display : none; position: absolute; top : 0px; left : 0px; height : 100%; z-index : -1; overflow : hidden;}
 #big_viz canvas { position : relative; }
 
-.viz .ui { position : absolute; bottom : 22px; left : 22px; display : block; height : 32px; background : #333; z-index : 0; border-radius : 3px; border: 1px solid #7F7F85;}
-.viz .ui div { display: block; width : 32px; height : 32px; background-image : url('/static/images/sprites.png'); float : left; background-size: 160px; border-right : 1px solid #7F7F85; }
-.viz .ui div:last-child { border-right : 0px; }
-.viz .ui div:hover { background-color : #7F7F85; }
-.viz .ui div.zoom { background-position : 0 0; }
-.viz .ui div.dezoom { background-position : -32px 0; }
+#big_viz .ui { position : absolute; bottom : 22px; left : 22px; display : block; height : 32px; background : #333; z-index : 0; border-radius : 3px; border: 1px solid #7F7F85;}
+#big_viz .ui div { display: block; width : 32px; height : 32px; background-image : url('/static/images/sprites.png'); float : left; background-size: 160px; border-right : 1px solid #7F7F85; }
+#big_viz .ui div:last-child { border-right : 0px; }
+#big_viz .ui div:hover { background-color : #7F7F85; }
+#big_viz .ui div.zoom { background-position : 0 0; }
+#big_viz .ui div.dezoom { background-position : -32px 0; }
+
+#map { position: absolute; top : 0px; left : 0px; height : 100%; width : 100%; z-index : -1; }
 
 #tubes {  }
 
