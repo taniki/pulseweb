@@ -394,9 +394,12 @@ function get_links(){
 //		layer_clusters.scale(0.5, new Point(0, 0));
 //		layer_links.scale(0.5, new Point(0, 0));
 //		pan_of(-1500, -300);
-		pan_to_cluster(clusters[158]);
+		// pan_to_cluster(clusters[158]);
 
 		view.draw();
+		
+		// Soon an event dispatcher to not mess between js spaces
+		Backbone.history.start({pushState: true, root: "/tubes/"});
 	});	
 }
 

@@ -67,7 +67,7 @@ term_view = Backbone.View.extend({
 	},
 	
 	open: function(){
-		explorer.load_term( this.model.get("id"), this.model.get("label") );
+		explorer.load_term( this.model.get("cluster_id"), this.model.get("label") );
 	}
 });
 
@@ -166,14 +166,18 @@ explorer_view = Backbone.View.extend({
 			terms.reset();
 			terms.add(data, {silent: true});
 			explorer.draw_terms();
+			
+			router.navigate("cluster/"+cluster_id);
 			// terms.first().trigger("click");
 		});
 	},
 
 	load_term: function(cluster_id, term_id){
+		router.navigate("cluster/"+cluster_id+"/term/"+term_id);
+
 		$.getJSON('/data/cluster/'+cluster_id+'/term/'+term_id, function(data){
 			var c = [];
-			
+
 			data.forEach(function(_article){
 				var a = new article({id: _article});
 				a.fetch();

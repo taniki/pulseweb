@@ -108,6 +108,7 @@ def cluster_info(cluster_id):
 		term = {}
 		
 		term["id"] = t["id0"]
+		term["cluster_id"] = cluster_id
 		term["label"] = t["term"]
 		term["count_articles"] = int( t["width"] * t["weight"] )
 		

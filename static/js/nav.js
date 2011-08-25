@@ -8,6 +8,9 @@ var metrolines_nav;
 var nav_step	= 0;
 var nav_width	= [0, 236, 236*3 -6 ];
 
+var router;
+var app_routes;
+
 $(document).ready(function(){
 
 metroline = Backbone.Model.extend({
@@ -79,6 +82,34 @@ metrolines_nav = Backbone.View.extend({
 		$("nav div div").removeClass("selected");
 		$("nav .stream_"+stream_id).addClass("selected");
 		$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
+	}	
+});
+
+app_routes = Backbone.Router.extend({
+	routes: {
+		"": 											"home",
+		"cluster/:cluster_id":							"focus_cluster",
+		"cluster/:cluster_id/term/:term_id":			"focus_cluster_term"
+	},
+	
+	home: function(){
+		pan_to_cluster(clusters[158]);
+	},
+	
+	focus_cluster: function(cluster_id){
+//		console.log("route : cluster/:cluster_id param:"+ cluster_id);
+		var c = clusters[cluster_id];
+		
+		select_cluster(c);
+		pan_to_cluster(c);
+		sidenav.select(c["stream"]);
+		explorer.load_cluster(c["id"]);
+	},
+	
+	focus_cluster_term: function(cluster_id, term_id){
+//		console.log("route : cluster/:cluster_id param:"+ cluster_id);
+		this.focus_cluster(cluster_id);
+		load_term(cluster_id, term_id)
 	}
 });
 
@@ -97,6 +128,9 @@ $(".less").click(function(){
 		go_to_nav_step(nav_step+1);
 	}
 });
+
+router = new app_routes();
+//
 
 });
 
