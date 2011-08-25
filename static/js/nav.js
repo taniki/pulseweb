@@ -87,7 +87,9 @@ metrolines_nav = Backbone.View.extend({
 		$("nav .stream_"+stream_id).addClass("selected");
 		
 		// FIXME provoking a bug when the nav is not yet loaded. ex: routing
-		$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
+		if($("nav .stream_"+stream_id).position()){
+			$("nav").scrollTop($("nav .stream_"+stream_id).position().top);
+		}
 	}	
 });
 
