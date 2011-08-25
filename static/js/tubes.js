@@ -2,8 +2,17 @@ paper.install(window);
 
 var project_tubes;
 
-var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
-var colors_sub = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
+// var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
+var colors_plain = [
+	"#00aeef",
+	"#cf5c42",
+	"#BE5993",
+	"#81A93E",
+	"#E2CD12",
+	"#DE9312",
+	"#DE9312",
+	"#303285"
+]
 
 var clusters = {}
 
