@@ -8,6 +8,8 @@ var metrolines_nav;
 var nav_step	= 0;
 var nav_width	= [0, 236, 236*3 -6 ];
 
+var nav_is_ready = false;
+
 var router;
 var app_routes;
 
@@ -132,7 +134,12 @@ $(".less").click(function(){
 });
 
 router = new app_routes();
-//
+
+nav_is_ready = true;
+
+if(viz_is_ready){
+	Backbone.history.start({pushState: true, root: "/tubes/"});
+}
 
 });
 

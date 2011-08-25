@@ -1,5 +1,7 @@
 paper.install(window);
 
+var viz_is_ready = false
+
 var project_tubes;
 
 // var colors_plain = [ "#00aeef", "#cf5c42", "#e1f4fd", "#f4d5e3", "#e1d8ad" ]
@@ -399,7 +401,11 @@ function get_links(){
 		view.draw();
 		
 		// Soon an event dispatcher to not mess between js spaces
-		Backbone.history.start({pushState: true, root: "/tubes/"});
+		viz_is_ready = true;
+		
+		if(nav_is_ready){
+			Backbone.history.start({pushState: true, root: "/tubes/"});
+		}
 	});	
 }
 
