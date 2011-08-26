@@ -8,6 +8,8 @@ var metrolines_nav;
 var nav_step	= 0;
 var nav_width	= [0, 236, 236*3 -6 ];
 
+var switch_viz_mode = 1;
+
 var nav_is_ready = false;
 
 var router;
@@ -95,11 +97,19 @@ app_routes = Backbone.Router.extend({
 	routes: {
 		"": 											"home",
 		"cluster/:cluster_id":							"focus_cluster",
+		"cluster/:cluster_id/term/:term_id":			"focus_cluster_term",
+
+		"map":											"map",
+		"cluster/:cluster_id":							"focus_cluster",
 		"cluster/:cluster_id/term/:term_id":			"focus_cluster_term"
 	},
 	
 	home: function(){
 		pan_to_cluster(clusters[158]);
+	},
+	
+	map: function(){
+		
 	},
 	
 	focus_cluster: function(cluster_id, silent){
@@ -117,7 +127,7 @@ app_routes = Backbone.Router.extend({
 		this.focus_cluster(cluster_id, true);
 		explorer.load_term(cluster_id, term_id)
 	}
-});
+	});
 
 window.sidenav = new metrolines_nav;
 
@@ -147,6 +157,12 @@ metrolines.bind("loaded", function(){
 	metrolines.unbind("loaded");
 });
 
+$(document).keypress(function(e){
+	if(e.which == 109){
+		switch_viz();
+	}
+});
+
 });
 
 function go_to_nav_step(step){
@@ -162,8 +178,25 @@ function go_to_nav_step(step){
 			left: nav_width[step] - 32 + 236
 		}, "slow");
 	});
+
 	$("#big_viz canvas").animate({
 		left: - parseInt(nav_width[step]/2)
 	}, "slow");
 
+	$("#map").animate({
+		left: - parseInt(nav_width[step]/2)
+	}, "slow");
+}
+
+
+
+function switch_viz(){
+	console.log("zip");
+
+	$(".viz").animate({
+		top: - switch_viz_mode * $("#big_viz").attr("height")
+	}, "fast");
+	
+	if(switch_viz_mode == 1 ){ switch_viz_mode = 0; }
+	else if(switch_viz_mode == 0 ){ switch_viz_mode = 1; }
 }

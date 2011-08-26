@@ -44,6 +44,9 @@ window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
 	$("#tubes").attr("height", $(window).height() );
 
+	$(".viz").attr("width", $(window).width() - 242);
+	$(".viz").attr("height", $(window).height() );
+
 	project_tubes = new Project()
 	project_tubes.activate();
 
@@ -57,7 +60,7 @@ window.onload = function() {
 	viz_elements = new Group;
 
 	draw_background();
-	
+
 	get_distribution();
     get_clusters();
 

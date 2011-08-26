@@ -185,6 +185,8 @@ explorer_view = Backbone.View.extend({
 			}
 			// terms.first().trigger("click");
 		});
+		
+		m.load_cluster(cluster_id);
 	},
 
 	load_term: function(cluster_id, term_id){

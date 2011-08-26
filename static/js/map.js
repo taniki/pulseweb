@@ -1,12 +1,16 @@
 var po;
 var map;
 
-var data;
-
 var s;
+
+var current_dataset = null
 
 var m = {
 	load_cluster: function(cluster_id){
+		if(current_dataset != null){
+			map.remove(current_dataset);
+		}
+
 		$.getJSON("/data/cluster/"+cluster_id+"/geo", function(data){
 			var geo_json = [];
 
@@ -14,16 +18,19 @@ var m = {
 				var p = {};
 					p.geometry = { coordinates: [ country["capital_long"], country["capital_lat"] ], type: "Point" };
 					p["w"] = country["weight"];
-				
+					p["cluster_id"] = cluster_id;
 				geo_json.push(p);
 			});
 
-			data = po.geoJson()
+			var data = po.geoJson()
 				.features(geo_json)
 			    .zoom(5)
+				.clip(false)
 				.on("load", test_anim);
-			
+
 			map.add(data);
+			
+			current_dataset = data;
 		});
 	}
 };
@@ -34,7 +41,7 @@ $(document).ready(function(){
 	map = po.map()
 	    .container(document.getElementById("map").appendChild(po.svg("svg")))
 		.add(po.interact())
-		.zoomRange([2,6]);
+		.zoomRange([3,6]);
 
 	map.add(po.image()
 	    .url(po.url("http://{S}tile.cloudmade.com"
@@ -62,8 +69,6 @@ $(document).ready(function(){
 		
 		console.log($(s));
 	})
-	
-	m.load_cluster(158);
 
 });
 
@@ -76,23 +81,18 @@ function test_anim(e){
 	var g = tile.element;
 
 	while (g.lastChild) g.removeChild(g.lastChild);
-
-	var c = 0;
+	
+	var color = colors_plain[ clusters[ e.features[0]["data"]["cluster_id"] ]["stream"] % colors_plain.length ]
 
 	f.forEach(function(p){
 		var s = po.svg("circle");
 
-		console.log(p);
-
 		var point = g.appendChild(s);
 		    point.setAttribute("cx", p.data.geometry.coordinates.x);
 		    point.setAttribute("cy", p.data.geometry.coordinates.y);
-		    point.setAttribute("r", parseInt( Math.log( p.data.w) * 10 ));
-			point.setAttribute("fill", colors_plain[ c % colors_plain.length ]);
-
-		console.log(point);
-		
-		c++;
+		    point.setAttribute("r", parseInt( p.data.w / 6 ));
+			point.setAttribute("fill", color);
+			point.setAttribute("opacity", 0.8);
 	});
 
 }
