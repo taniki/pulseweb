@@ -116,6 +116,20 @@ def cluster_info(cluster_id):
 	
 	return json.dumps(resp)
 
+@app.route('/data/cluster/<int:cluster_id>/geo')
+def cluster_geo(cluster_id):
+	resp = []
+
+#	for a in query_db('select * from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))' % int(cluster_id) ):
+	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select id from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))) group by countrycode' % int(cluster_id) ):
+		if(a["weight"] < 2):
+			continue
+
+		resp.append(a)
+
+
+	return json.dumps(resp)
+
 @app.route('/data/cluster/<int:cluster_id>/term/<term_id>')
 def cluster_term_articles(cluster_id, term_id):
 	resp = []

@@ -22,7 +22,7 @@ canvas { margin : 0; }
 #big_viz .ui div.zoom { background-position : 0 0; }
 #big_viz .ui div.dezoom { background-position : -32px 0; }
 
-#map { position: absolute; top : 0px; left : 0px; height : 100%; width : 100%; z-index : -1; }
+#map { position: absolute; top : 0px; left : 0px; height : 100%; width : 100%; z-index : 1; }
 
 #tubes {  }
 
