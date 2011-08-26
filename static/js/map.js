@@ -11,6 +11,8 @@ var m = {
 			map.remove(current_dataset);
 		}
 
+		$("#viz .loading").css("display", "block");
+
 		$.getJSON("/data/cluster/"+cluster_id+"/geo", function(data){
 			var geo_json = [];
 
@@ -31,6 +33,8 @@ var m = {
 			map.add(data);
 			
 			current_dataset = data;
+			
+			$("#viz .loading").css("display", "none");
 		});
 	}
 };
