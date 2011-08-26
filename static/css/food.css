@@ -24,16 +24,19 @@ canvas { margin : 0; }
 #viz .ui>div:last-child { border-right : 0px; }
 
 #viz .ui .button { display: block; width : 32px; height : 32px; background-image : url('/static/images/sprites.png'); background-size: 160px; }
-#viz .ui .button:hover { background-color : #ddd; }
+#viz .ui>div:hover { background-color : #626262; }
 
 #viz .ui .switch { display: block; width : 128px; height : 32px; position : relative; }
 #viz .ui .loading { display: block; width : 192px; height : 32px; }
-
 
 #viz .ui div.zoom { background-position : 0 0; }
 #viz .ui div.dezoom { background-position : -32px 0; }
 #viz .ui div.tubes { background-position : -128px 0; position : absolute; left : 0;}
 #viz .ui div.map { background-position : 0 -32px; position : absolute; right : 0;}
+
+#viz .ui .switch .slider { display: block; width : 64px; height : 32px; position : absolute; left : 32px; background-position : -32px -32px; background-image : url('/static/images/sprites.png'); background-size: 160px;  }
+#viz .ui .switch .slider div { display: block; width : 32px; height : 32px; position : relative; left : 0px; background-position : -96px -32px; background-image : url('/static/images/sprites.png'); background-size: 160px; }
+
 
 #viz .ui .loading img { display: block; position : relative; top : 7px; left : 17px; }
 

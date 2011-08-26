@@ -163,6 +163,10 @@ $(document).keypress(function(e){
 	}
 });
 
+$(".switch_viz").click(function(){
+	switch_viz();
+});
+
 });
 
 function go_to_nav_step(step){
@@ -188,13 +192,15 @@ function go_to_nav_step(step){
 	}, "slow");
 }
 
-
-
 function switch_viz(){
 	console.log("zip");
 
 	$(".viz").animate({
 		top: - switch_viz_mode * $("#big_viz").attr("height")
+	}, "fast");
+	
+	$("#viz .ui .slider div").animate({
+		left: switch_viz_mode * 32
 	}, "fast");
 	
 	if(switch_viz_mode == 1 ){ switch_viz_mode = 0; }
