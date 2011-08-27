@@ -121,7 +121,8 @@ def cluster_geo(cluster_id):
 	resp = []
 
 #	for a in query_db('select * from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))' % int(cluster_id) ):
-	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select id from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))) group by countrycode' % int(cluster_id) ):
+#	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select id from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))) group by countrycode' % int(cluster_id) ):
+	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = %i) group by countrycode' % int(cluster_id) ):
 		if(a["weight"] < 2):
 			continue
 
@@ -134,8 +135,8 @@ def cluster_geo(cluster_id):
 def cluster_term_articles(cluster_id, term_id):
 	resp = []
 
-	for t in query_db('SELECT * FROM articles2terms WHERE terms_id = "%s" ' % term_id ):
-		resp.append(t["wos_id"])
+	for t in query_db('SELECT article_id FROM cluster_term_article WHERE cluster_univ_id = %i AND term = "%s" ' % (cluster_id, term_id) ):
+		resp.append(t["article_id"])
 
 	resp = sorted ( set(resp) )
 
@@ -147,8 +148,8 @@ def cluster_term_articles_full(cluster_id, term_id):
 
 	a = []
 
-	for t in query_db('SELECT * FROM articles2terms WHERE terms_id = "%s" ' % term_id ):
-		a.append(t["wos_id"])
+	for t in query_db('SELECT article_id FROM cluster_term_article WHERE cluster_univ_id = %i AND term = "%s" ' % (cluster_id, term_id) ):
+		a.append(str( t["article_id"] ) )
 
 	a = sorted ( set(a) )
 

@@ -52,7 +52,7 @@ $(document).ready(function(){
 	    + "/405f3b3b4b3c44ef9515fbac297bf25a" // http://cloudmade.com/register
 	    + "/43678/256/{Z}/{X}/{Y}.png")		  // 
 	    .hosts(["", "a.", "b.", "c.", ])));
-	    // .url(po.url("http://127.0.0.1/1.0.0/pulseweb-africa_5a1596/{Z}/{X}/{Y}.png")));
+//	    .url(po.url("http://127.0.0.1:8888/1.0.0/pulseweb-africa_5a1596/{Z}/{X}/{Y}.png")));
 
 	map.center( { lat: 0, lon: 40 } ).zoom(4);
 	
@@ -94,7 +94,7 @@ function test_anim(e){
 		var point = g.appendChild(s);
 		    point.setAttribute("cx", p.data.geometry.coordinates.x);
 		    point.setAttribute("cy", p.data.geometry.coordinates.y);
-		    point.setAttribute("r", parseInt( p.data.w / 6 ));
+		    point.setAttribute("r", parseInt( p.data.w ));
 			point.setAttribute("fill", color);
 			point.setAttribute("opacity", 0.8);
 	});
