@@ -259,6 +259,8 @@ function get_clusters(){
 //				current['x'] = parseInt( day_pixels * c["end"] ) + cluster_box_width + 100;
 
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
+				current['s'] = parseInt(c["w"]);
+				
 				current['stream'] = c["stream_id"];
 				current['id'] = c["id"];
 
@@ -300,7 +302,7 @@ function get_clusters(){
 				
 				current["density"] = c["w"] / c["period_length"];
 				
-				current['label_width'].content = current["w"];
+				current['label_width'].content = current["s"];
 
 				current['path'].cluster_id = c["id"];
 				
