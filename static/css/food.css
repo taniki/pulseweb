@@ -27,7 +27,7 @@ canvas { margin : 0; }
 #viz .ui>div:hover { background-color : #626262; }
 
 #viz .ui .switch { display: block; width : 128px; height : 32px; position : relative; }
-#viz .ui .loading { display: block; width : 192px; height : 32px; }
+#viz .ui .loading { display: none; width : 192px; height : 32px; }
 
 #viz .ui div.zoom { background-position : 0 0; }
 #viz .ui div.dezoom { background-position : -32px 0; }

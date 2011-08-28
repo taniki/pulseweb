@@ -100,34 +100,11 @@ function init_map(){
 			.zoomRange([3,6]);
 
 		map.add(po.image()
-		    // .url(po.url("http://{S}tile.cloudmade.com"
-		    // + "/405f3b3b4b3c44ef9515fbac297bf25a" // http://cloudmade.com/register
-		    // + "/43678/256/{Z}/{X}/{Y}.png")		  // 
-		    // .hosts(["", "a.", "b.", "c.", ])));
-		    .url(tilestream('http://tiles.localhost/1.0.0/pulseweb-africa/{Z}/{X}/{Y}.png')));
+		    .url(po.url('http://tiles.formism.net/2.0.0/pulseweb/{Z}/{X}/{Y}.png')));
 
 		map.center( { lat: 0, lon: 40 } ).zoom(4);
 
 		console.log("hum");
-}
-
-function tilestream(template) {
-  /** Formats the specified number per TileStache. */
-  return function(c) {
-    var max = 1 << c.zoom;
-	var column = c.column % max;
-    if (column < 0) column += max;
-	var row = max - c.row - 1;
-
-    return template.replace(/{(.)}/g, function(s, v) {
-      switch (v) {
-        case "Z": return c.zoom;
-        case "X": return column;
-        case "Y": return row;
-      }
-      return v;
-    });
-  };
 }
 
 $(document).ready(function(){
