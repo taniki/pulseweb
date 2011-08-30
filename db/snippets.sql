@@ -39,4 +39,13 @@ CREATE INDEX clusters_period_idx ON clusters(period);
 CREATE INDEX cluster_term_article_term_id_idx ON cluster_term_article(term_id);
 CREATE UNIQUE INDEX terms_idx ON terms(term);
 
+CREATE INDEX countries_iso_idx ON countries(iso);
+CREATE INDEX region_weight_iso_idx ON region_weight(countrycode);
+
+
 #select article_id from cluster_term_article where cluster_univ_id = 0 and term = "alimentaire"
+
+
+### OPTIMISATION
+
+SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = 10) group by countrycode

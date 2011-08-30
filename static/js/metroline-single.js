@@ -74,10 +74,10 @@ function draw_metroline_single(canvas, stream){
 
 		c.beginPath();
 
-		var start_x = parseInt( link["start"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius);
+		var start_x = parseInt( link["start"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius  + select_radius);
 		var start_y = parseInt( link["start"]["y"] * 20 + cluster_radius + select_radius);
 
-		var end_x = parseInt( link["end"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius);
+		var end_x = parseInt( link["end"]["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2))  + cluster_radius  + select_radius);
 		var end_y = parseInt( link["end"]["y"] * 20 + cluster_radius + select_radius);
 		
 		c.moveTo(start_x, start_y);
@@ -91,7 +91,7 @@ function draw_metroline_single(canvas, stream){
 	});
 
 	_clusters.forEach(function(cluster){
-		var x = parseInt( cluster["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2)) + 4 );
+		var x = parseInt( cluster["x"] * ( 220 - 12 - (cluster_radius * 2) - (select_radius * 2)) + 4  + select_radius );
 		var y = parseInt( cluster["y"] * 20 + cluster_radius + select_radius );
 
 		if(selected.cluster == cluster["id"] && selected.stream == stream.get("id")){

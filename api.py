@@ -121,13 +121,22 @@ def cluster_info(cluster_id):
 def cluster_geo(cluster_id):
 	resp = []
 
+	countries = {}
+	
+	for c in query_db('SELECT iso, capital_lat, capital_long FROM countries'):
+		countries[ c["iso"] ] = c
+
+	# OPTIMIZE ME !!
 #	for a in query_db('select * from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))' % int(cluster_id) ):
 #	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select id from articles WHERE id in (select wos_id from articles2terms WHERE terms_id in (SELECT term FROM clusters WHERE cluster_univ_id = %i ORDER BY weight DESC))) group by countrycode' % int(cluster_id) ):
-	for a in query_db('SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = %i) group by countrycode' % int(cluster_id) ):
+	for a in query_db('SELECT countrycode, sum(weight) as weight from region_weight WHERE region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = %i) group by countrycode' % int(cluster_id) ):
+#	for a in query_db('SELECT countries.*, sum(weight)  AS weight FROM region_weight, countries, cluster_article WHERE countrycode = iso AND region_weight.id = cluster_article.article_id AND cluster_article.cluster_univ_id = %i group by countrycode' % int(cluster_id) ):
 		if(a["weight"] < 2):
 			continue
 
-		resp.append(a)
+		countries[ a["countrycode"] ]["weight"] = a["weight"]
+
+		resp.append(countries[ a["countrycode"] ])
 
 
 	return json.dumps(resp)
