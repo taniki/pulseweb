@@ -254,8 +254,8 @@ function get_clusters(){
 			var current = {};
 				// console.log(c);
 			
-				current['y'] = parseInt(c["x"] * 2500);
-				current['x'] = parseInt(c["y"] * 2500) + cluster_box_width + 100;
+				current['x'] = parseInt(c["x"] * 2500);
+				current['y'] = parseInt(c["y"] * 2500) + cluster_box_width + 100;
 //				current['x'] = parseInt( day_pixels * c["end"] ) + cluster_box_width + 100;
 
 				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );

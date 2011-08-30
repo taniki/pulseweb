@@ -63,16 +63,26 @@ function draw_clusters(e){
 		var border = g.appendChild(po.svg("circle"));
 		    border.setAttribute("cx", p.data.geometry.coordinates.x);
 		    border.setAttribute("cy", p.data.geometry.coordinates.y);
-		    border.setAttribute("r", 40);
+		    border.setAttribute("r", 35);
+			border.setAttribute("class", "marker_border");
 			border.setAttribute("fill", color);
 			border.setAttribute("opacity", 0.9);
 
 		var marker = g.appendChild(po.svg("circle"));
 		    marker.setAttribute("cx", p.data.geometry.coordinates.x);
 		    marker.setAttribute("cy", p.data.geometry.coordinates.y);
-		    marker.setAttribute("r", 30);
+			marker.setAttribute("r", 25);
+			marker.setAttribute("class", "marker");
 			marker.setAttribute("fill", "#ffffff");
 			marker.setAttribute("opacity", 1);
+
+			// $(marker).hover(function(e){
+			// 	$(marker).animate({
+			// 		"width" : "50"
+			// 	}, "slow");
+			// }, function(e){
+			// 	marker.setAttribute("fill", "#ffffff");
+			// });
 
 		var iso = g.appendChild(po.svg("text"));
 		    iso.setAttribute("x", p.data.geometry.coordinates.x);
@@ -85,8 +95,6 @@ function draw_clusters(e){
 		    val.setAttribute("y", p.data.geometry.coordinates.y);
 		    val.setAttribute("dy", "1em");
 		    val.appendChild(document.createTextNode( parseInt(p.data.w)));
-
-
 	});
 
 }
@@ -97,7 +105,7 @@ function init_map(){
 		map = po.map()
 		    .container(document.getElementById("map").appendChild(po.svg("svg")))
 			.add(po.interact())
-			.zoomRange([3,6]);
+			.zoomRange([3,5]);
 
 		map.add(po.image()
 		    .url(po.url('http://tiles.formism.net/2.0.0/pulseweb/{Z}/{X}/{Y}.png')));
@@ -109,16 +117,5 @@ function init_map(){
 
 $(document).ready(function(){
 	init_map();
-//	map.add(data);
-
-	$(s).click(function(e){
-		console.log("clic");
-		$(s).animate({
-			"width": "200"
-		}, "slow");
-		
-		console.log($(s));
-	})
-
 });
 

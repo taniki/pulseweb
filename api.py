@@ -39,7 +39,7 @@ def streams():
 			cluster = {}
 			
 			cluster["id"] = t["cluster_univ_id"]
-			cluster["x"] = t["pos_y"]
+			cluster["x"] = t["pos_x"]
 			cluster["y"] = t["y_pos"] - stream["min_y"]
 
 			clusters[cluster["id"]] = cluster
@@ -75,15 +75,15 @@ def clusters():
 	resp = cache.get("clusters")
 
 	if resp is None:
-		for cluster in query_db('SELECT *, count(distinct period) as c FROM clusters GROUP BY cluster_univ_id'):
+		for cluster in query_db('SELECT *, count(distinct period) as c FROM clusters WHERE isolated = 0 GROUP BY cluster_univ_id'):
 		
 			# Reduction des donnees transferees 1.4 mo -> 230 ko
 			cluster_light = {}
 			cluster_light["label"] = cluster["cluster_label"]
 			cluster_light["id"] = cluster["cluster_univ_id"]
 			cluster_light["x"] = cluster["pos_x"]
-			cluster_light["y_norm"] = cluster["pos_y"]
-			cluster_light["y"] = cluster["pos_y_t"]
+			cluster_light["x_norm"] = cluster["pos_x_t"]
+			cluster_light["y"] = cluster["pos_y"]
 			cluster_light["w"] = cluster["width"]
 		
 			t = cluster["period"].split("_")
@@ -110,6 +110,7 @@ def cluster_info(cluster_id):
 		term["id"] = t["id0"]
 		term["cluster_id"] = cluster_id
 		term["label"] = t["term"]
+		# term["term_id"] = t["term_id"]
 		term["count_articles"] = int( t["width"] * t["weight"] )
 		
 		resp.append(term)
@@ -135,7 +136,7 @@ def cluster_geo(cluster_id):
 def cluster_term_articles(cluster_id, term_id):
 	resp = []
 
-	for t in query_db('SELECT article_id FROM cluster_term_article WHERE cluster_univ_id = %i AND term = "%s" ' % (cluster_id, term_id) ):
+	for t in query_db('SELECT article_id FROM cluster_term_article, terms WHERE cluster_univ_id = %i AND cluster_term_article.term_id = terms.id AND terms.term = "%s" ' % (cluster_id, term_id) ):
 		resp.append(t["article_id"])
 
 	resp = sorted ( set(resp) )
@@ -148,7 +149,7 @@ def cluster_term_articles_full(cluster_id, term_id):
 
 	a = []
 
-	for t in query_db('SELECT article_id FROM cluster_term_article WHERE cluster_univ_id = %i AND term = "%s" ' % (cluster_id, term_id) ):
+	for t in query_db('SELECT article_id FROM cluster_term_article, terms WHERE cluster_univ_id = %i AND cluster_term_article.term_id = terms.id AND terms.term = "%s" ' % (cluster_id, term_id) ):
 		a.append(str( t["article_id"] ) )
 
 	a = sorted ( set(a) )
@@ -172,8 +173,8 @@ def clusters_metrolines():
 			cluster_light = {}
 			cluster_light["label"] = cluster["cluster_label"]
 			cluster_light["id"] = cluster["cluster_univ_id"]
-			cluster_light["x"] = cluster["y_pos"]
-			cluster_light["y"] = cluster["pos_y_t"]
+			cluster_light["x"] = cluster["pos_x"]
+			cluster_light["y"] = cluster["y_pos"]
 			cluster_light["w"] = cluster["width"]
 
 			t = cluster["period"].split("_")

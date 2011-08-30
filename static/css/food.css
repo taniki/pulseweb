@@ -43,6 +43,10 @@ canvas { margin : 0; }
 #map { position: relative; top : 0px; left : 0px; height : 100%; }
 #map { font-family : verdana; text-anchor : middle; font-size : 14px; }
 #map .w { font-size : 12px; }
+/*
+#map .marker_border { display:block; width : 35px; height : 35px; }
+#map .marker { display:block; width : 25px; height : 25px; }
+*/
 
 #tubes {  }
 

@@ -36,6 +36,7 @@ CREATE INDEX clusters_stream_id_idx ON clusters(stream_id);
 
 CREATE INDEX clusters_period_idx ON clusters(period);
 
-CREATE INDEX cluster_term_article_term_idx ON cluster_term_article(term);
+CREATE INDEX cluster_term_article_term_id_idx ON cluster_term_article(term_id);
+CREATE UNIQUE INDEX terms_idx ON terms(term);
 
 #select article_id from cluster_term_article where cluster_univ_id = 0 and term = "alimentaire"
