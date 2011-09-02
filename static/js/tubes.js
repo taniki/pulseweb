@@ -110,8 +110,8 @@ window.onload = function() {
 		}
 	}	
 	
-	$(".viz .ui .zoom").click(function(e){ zoom(0.1); });
-	$(".viz .ui .dezoom").click(function(e){ dezoom(0.1); });
+	$("#viz .ui .zoom").click(function(e){ zoom(0.1); });
+	$("#viz .ui .dezoom").click(function(e){ dezoom(0.1); });
 	
 	view.onResize = function(e){
 //		layer_background;

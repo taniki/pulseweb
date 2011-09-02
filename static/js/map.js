@@ -112,6 +112,14 @@ function init_map(){
 
 		map.center( { lat: 0, lon: 40 } ).zoom(4);
 
+		$("#viz .ui .zoom").click(function(e){
+			map.zoomBy(+1);
+		});
+		$("#viz .ui .dezoom").click(function(e){
+			map.zoomBy(-1);
+		});
+
+
 		console.log("hum");
 }
 
