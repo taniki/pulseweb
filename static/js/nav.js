@@ -132,6 +132,10 @@ app_routes = Backbone.Router.extend({
 window.sidenav = new metrolines_nav;
 
 $(".container").height($(".container").height() - 24 +"px");
+$("#current_filter").children("ul").height( ($(".container").height()) * 2 +"px");
+
+$("#current_filter").children("ul").children("ul").height( $("#current_filter > ul").height()/2 +"px");
+
 
 $(".more").click(function(){
 	if(nav_step > 0){
@@ -197,6 +201,10 @@ function switch_viz(){
 
 	$(".viz").animate({
 		top: - switch_viz_mode * $("#big_viz").attr("height")
+	}, "fast");
+	
+	$("#current_filter>ul").animate({
+		top: - switch_viz_mode * $("#current_filter > ul").height()/2
 	}, "fast");
 	
 	$("#viz .ui .slider div").animate({

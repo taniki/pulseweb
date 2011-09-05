@@ -75,14 +75,13 @@ function draw_clusters(e){
 			marker.setAttribute("class", "marker");
 			marker.setAttribute("fill", "#ffffff");
 			marker.setAttribute("opacity", 1);
+			marker.setAttribute("data-iso", p.data.iso);
+			marker.setAttribute("data-cluster_id", p.data.cluster_id);
 
-			// $(marker).hover(function(e){
-			// 	$(marker).animate({
-			// 		"width" : "50"
-			// 	}, "slow");
-			// }, function(e){
-			// 	marker.setAttribute("fill", "#ffffff");
-			// });
+			$(marker).click(function(e){
+				console.log([ p.data.cluster_id, p.data.iso ]);
+				explorer.open_country(p.data.cluster_id, p.data.iso);
+			});
 
 		var iso = g.appendChild(po.svg("text"));
 		    iso.setAttribute("x", p.data.geometry.coordinates.x);

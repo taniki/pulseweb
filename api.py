@@ -126,7 +126,7 @@ def cluster_geo(cluster_id):
 	for c in query_db('SELECT iso, capital_lat, capital_long FROM countries'):
 		countries[ c["iso"] ] = c
 
-	for a in query_db('SELECT * from cluster_country_weight WHERE cluster_univ_id = %i' % int(cluster_id) ):
+	for a in query_db('SELECT * from cluster_country_weight WHERE cluster_univ_id = %i ORDER BY weight DESC' % int(cluster_id) ):
 		if(a["weight"] < 2):
 			continue
 
@@ -168,8 +168,15 @@ def cluster_term_articles_full(cluster_id, term_id):
 def cluster_country_full(cluster_id, country_id):
 	resp = []
 	
-	for article in query_db('SELECT articles.* from articles, region_weight, cluster_article WHERE region_weight.id = article_id AND countrycode = "%s" AND cluster_univ_id = %i AND articles.id = region_weight.id' % (country_id, cluster_id) ):
-		resp.append(row_to_article(article)); 
+	# for article in query_db('SELECT articles.* from articles, region_weight, cluster_article WHERE region_weight.id = article_id AND countrycode = "%s" AND cluster_univ_id = %i AND articles.id = region_weight.id' % (country_id, cluster_id) ):
+	# 	resp.append(row_to_article(article)); 
+	
+	t = []
+	for r in query_db('SELECT id from region_weight, cluster_article WHERE region_weight.id = article_id AND countrycode = "%s" AND cluster_univ_id = %i' % (country_id, cluster_id) ):
+		t.append(str( r["id"] ));
+
+	for article in query_db('SELECT * FROM articles WHERE id IN (%s)' % (','.join(t)) ):
+		resp.append(row_to_article(article));
 	
 	return json.dumps(resp)
 
