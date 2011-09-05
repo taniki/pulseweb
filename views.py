@@ -13,6 +13,10 @@ def v_cluster(cluster_id):
 def v_cluster_term(cluster_id, term_id):
 	return tubes()
 
+@app.route('/tubes/cluster/<cluster_id>/country/<country_id>')
+def v_cluster_country(cluster_id, country_id):
+	return tubes()
+
 @app.route('/tubes/')
 def tubes():
 	return render_template("tubes.html")

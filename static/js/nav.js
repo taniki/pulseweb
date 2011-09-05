@@ -101,7 +101,9 @@ app_routes = Backbone.Router.extend({
 
 		"map":											"map",
 		"cluster/:cluster_id":							"focus_cluster",
-		"cluster/:cluster_id/term/:term_id":			"focus_cluster_term"
+		"cluster/:cluster_id/term/:term_id":			"focus_cluster_term",
+		"cluster/:cluster_id/country/:country_id":		"focus_cluster_country"
+
 	},
 	
 	home: function(){
@@ -109,7 +111,7 @@ app_routes = Backbone.Router.extend({
 	},
 	
 	map: function(){
-		
+		switch_viz();
 	},
 	
 	focus_cluster: function(cluster_id, silent){
@@ -126,6 +128,10 @@ app_routes = Backbone.Router.extend({
 //		console.log("route : cluster/:cluster_id param:"+ cluster_id);
 		this.focus_cluster(cluster_id, true);
 		explorer.load_term(cluster_id, term_id)
+	},
+	
+	focus_cluster_country: function(cluster_id, country_id){
+		
 	}
 	});
 

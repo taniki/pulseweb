@@ -52,4 +52,4 @@ SELECT countries.*, sum(weight) as weight from region_weight, countries WHERE co
 
 CREATE TABLE cluster_country_weight
 AS
-SELECT cluster_univ_id, countrycode as iso, sum(weight) as weight from region_weight, cluster_article WHERE region_weight.id = article_id group by countrycode
+SELECT cluster_univ_id, countrycode as iso, sum(weight) as weight from region_weight, cluster_article WHERE region_weight.id = article_id group by countrycode, cluster_univ_id

@@ -242,36 +242,16 @@ explorer_view = Backbone.View.extend({
 
 
 	load_cluster_country: function(cluster_id, country_id){
-		router.navigate("cluster/"+cluster_id+"/country/"+country_id);
+		this.load_filter(cluster_id, 'country', country_id);
 
-		go_to_nav_step(2);
-
-		terms.bind("loaded",function(c){
-			terms.models.forEach(function(t){
-				if(t.get("label") == term_id){ t.trigger("selected"); }
-			});
-			terms.unbind("loaded");
-		});
-
-		/* loading */
-		this.$("#current_articles").html('<div class="loader"><img src="/static/images/loader.gif" /></div>');
-
-		$.getJSON('/data/cluster/'+cluster_id+'/country/'+country_id+"/full", function(data){
-			var c = [];
-
-			data.forEach(function(_article){
-				var a = new article(_article);
-//				a.fetch();
-
-				c.push(a);
-			});
-
-			articles.reset(c);
-		});
 	},
 
 	load_term: function(cluster_id, term_id){
-		router.navigate("cluster/"+cluster_id+"/term/"+term_id);
+		this.load_filter(cluster_id, 'term', term_id);
+	},
+	
+	load_filter: function(cluster_id, type, term_id){
+		router.navigate("cluster/"+cluster_id+"/"+type+"/"+term_id);
 
 		go_to_nav_step(2);
 
@@ -285,13 +265,13 @@ explorer_view = Backbone.View.extend({
 		/* loading */
 		this.$("#current_articles").html('<div class="loader"><img src="/static/images/loader.gif" /></div>');
 
-		$.getJSON('/data/cluster/'+cluster_id+'/term/'+term_id+"/full", function(data){
+		$.getJSON('/data/cluster/'+cluster_id+'/'+type+'/'+term_id+"/full", function(data){
 			var c = [];
 
 			data.forEach(function(_article){
 				var a = new article(_article);
 //				a.fetch();
-				
+
 				c.push(a);
 			});
 
