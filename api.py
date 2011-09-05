@@ -127,10 +127,10 @@ def cluster_geo(cluster_id):
 		countries[ c["iso"] ] = c
 
 	for a in query_db('SELECT * from cluster_country_weight WHERE cluster_univ_id = %i' % int(cluster_id) ):
-		if(a["sum(weight)"] < 2):
+		if(a["weight"] < 2):
 			continue
 
-		countries[ a["iso"] ]["weight"] = a["sum(weight)"]
+		countries[ a["iso"] ]["weight"] = a["weight"]
 
 		resp.append(countries[ a["iso"] ])
 
@@ -162,6 +162,15 @@ def cluster_term_articles_full(cluster_id, term_id):
 	for article in query_db('SELECT * FROM articles WHERE id IN (%s)' % (','.join(a)) ):
 		resp.append(row_to_article(article));
 
+	return json.dumps(resp)
+
+@app.route('/data/cluster/<int:cluster_id>/country/<country_id>/full')
+def cluster_country_full(cluster_id, country_id):
+	resp = []
+	
+	for article in query_db('SELECT articles.* from articles, region_weight, cluster_article WHERE region_weight.id = article_id AND countrycode = "%s" AND cluster_univ_id = %i AND articles.id = region_weight.id' % (country_id, cluster_id) ):
+		resp.append(row_to_article(article)); 
+	
 	return json.dumps(resp)
 
 @app.route('/data/clusters/positions/metrolines')

@@ -48,4 +48,8 @@ CREATE INDEX region_weight_iso_idx ON region_weight(countrycode);
 
 ### OPTIMISATION
 
-SELECT countries.*, sum(weight)  as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = 10) group by countrycode
+SELECT countries.*, sum(weight) as weight from region_weight, countries WHERE countrycode = iso and region_weight.id in (select article_id from cluster_article WHERE cluster_univ_id = 10) group by countrycode
+
+CREATE TABLE cluster_country_weight
+AS
+SELECT cluster_univ_id, countrycode as iso, sum(weight) as weight from region_weight, cluster_article WHERE region_weight.id = article_id group by countrycode
