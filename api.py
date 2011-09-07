@@ -1,6 +1,7 @@
 from pulseweb import app
 from pulseweb.db import query_db
 from werkzeug.contrib.cache import SimpleCache
+from flask import request
 
 import time
 from datetime import date
@@ -178,7 +179,7 @@ def cluster_country_full(cluster_id, country_id):
 	for article in query_db('SELECT * FROM articles WHERE id IN (%s)' % (','.join(t)) ):
 		resp.append(row_to_article(article));
 	
-	return json.dumps(resp)
+	return json.dumps(resp) #json.dumps(request.headers["accept"].partition(',')[0]) #json.dumps(resp)
 
 @app.route('/data/clusters/positions/metrolines')
 def clusters_metrolines():

@@ -16,6 +16,7 @@ Pulseweb is a small project. It is packaged as a webserver with it's API and the
 	- /data/cluster/:id/geo
 	- /data/cluster/:id/term/:id
 	- /data/cluster/:id/term/:id/full
+	- /data/cluster/:id/country/:id/full
 	- /data/article/:id
 	- /data/distribution/articles/by_month
 
