@@ -37,6 +37,8 @@ All the API responses are in JSON.
 ## TO DO ##
 
 - add non-json view (condition on ``if(request.accept)``)
+- add unit tests
+- add performance tests
 - refactorize the js
 - integrate with requirejs
 
