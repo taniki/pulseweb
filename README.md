@@ -34,6 +34,12 @@ All the API responses are in JSON.
 	- flask
 	- simplejson
 
+## TO DO ##
+
+- add non-json view (condition on ``if(request.accept)``)
+- refactorize the js
+- integrate with requirejs
+
 ## WARNING ##
 
 This repositories come without DB. You must provide a ``alimsec_africa_light.db`` file by yourself and put it in the ``db/`` directory.
