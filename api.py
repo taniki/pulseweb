@@ -194,7 +194,7 @@ def clusters_metrolines():
 			cluster_light = {}
 			cluster_light["label"] = cluster["cluster_label"]
 			cluster_light["id"] = cluster["cluster_univ_id"]
-			cluster_light["x"] = cluster["pos_x"]
+			cluster_light["x"] = cluster["pos_x_t"]
 			cluster_light["y"] = cluster["y_pos"]
 			cluster_light["w"] = cluster["width"]
 
