@@ -38,6 +38,8 @@ All the API responses are in JSON.
 
 - add non-json view (condition on ``if(request.accept)``)
 - add unit tests
+- add local jquery
+- add tag detection
 - add performance tests
 - refactorize the js
 - integrate with requirejs

@@ -124,7 +124,7 @@ def cluster_geo(cluster_id):
 
 	countries = {}
 	
-	for c in query_db('SELECT iso, capital_lat, capital_long FROM countries'):
+	for c in query_db('SELECT iso, name, capital_lat, capital_long FROM countries'):
 		countries[ c["iso"] ] = c
 
 	for a in query_db('SELECT * from cluster_country_weight WHERE cluster_univ_id = %i ORDER BY weight DESC' % int(cluster_id) ):

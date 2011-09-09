@@ -21,6 +21,7 @@ var m = {
 					p.geometry = { coordinates: [ country["capital_long"], country["capital_lat"] ], type: "Point" };
 					p["w"] = country["weight"];
 					p["iso"] = country["iso"];
+					p["name"] = country["name"];
 					p["cluster_id"] = cluster_id;
 				geo_json.push(p);
 			});
@@ -87,7 +88,7 @@ function draw_clusters(e){
 		    iso.setAttribute("x", p.data.geometry.coordinates.x);
 		    iso.setAttribute("y", p.data.geometry.coordinates.y);
 		    // iso.setAttribute("dy", "1em");
-		    iso.appendChild(document.createTextNode(p.data.iso));
+		    iso.appendChild(document.createTextNode(p.data.name));
 
 		var val = g.appendChild(po.svg("text"));
 		    val.setAttribute("x", p.data.geometry.coordinates.x);

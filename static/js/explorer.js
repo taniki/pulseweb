@@ -226,7 +226,7 @@ explorer_view = Backbone.View.extend({
 			data.forEach(function(c){
 				t = {};
 				t["id"] = c["iso"];
-				t["label"] = c["iso"];
+				t["label"] = c["name"];
 				t["count_articles"] = parseInt(c["weight"]);
 				t["type"] = "country";
 				t["cluster_id"] = cluster_id;
