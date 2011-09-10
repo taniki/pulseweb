@@ -93,6 +93,7 @@ def clusters():
 			cluster_light["start"] = int(t[0])
 			cluster_light["end"] = int(t[1])
 			cluster_light["stream_id"] = cluster["stream_id"]
+			cluster_light["group_id"] = cluster["suprathematique"]
 
 			clusters.append(cluster_light)
 

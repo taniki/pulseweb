@@ -25,7 +25,10 @@ var layer_background;
 var viz_elements;
 var control_elements;
 
-var day_pixels = 2500 / 4198;
+var timeline_width = 4000;
+var x_y_ratio = 1.8;
+
+var day_pixels = timeline_width / 4198;
 
 var global_move = { x:0, y:0 }
 
@@ -189,22 +192,23 @@ function draw_background(){
 
 	for(var y = 0;  y < 12; y++){
 		var x = parseInt( y * 360 * day_pixels) + 0.5;
+
 		var p = new Path();
 			p.add( [ 100 + x, 0 ]);
 			p.add( [ 100 + x, h ]);
-		p.strokeColor = "#dddddd";
-		p.strokeWidth = 1;
+			p.strokeColor = "#dddddd";
+			p.strokeWidth = 1;
 
 		var label = new PointText( new Point( x + 6 + 100, 30) );
-		label.characterStyle = {
-			font: "Varela",
-			fontSize: 24,
-			fillColor: "black"
-		};
-		label.paragraphStyle = {
-			justification: 'left'
-		};
-		label.content = 2000 + y;
+			label.characterStyle = {
+				font: "Varela",
+				fontSize: 24,
+				fillColor: "black"
+			};
+			label.paragraphStyle = {
+				justification: 'left'
+			};
+			label.content = 2000 + y;
 
 		//console.log(p);
 	}
@@ -254,19 +258,20 @@ function get_clusters(){
 			var current = {};
 				// console.log(c);
 			
-				current['x'] = parseInt(c["x_norm"] * 2500) + cluster_box_width + 100;
-				current['y'] = parseInt(c["y"] * 2500);
+				current['x'] = parseInt(  c["x_norm"]	* timeline_width) + cluster_box_width + 100;
+				current['y'] = parseInt( (c["y"]		* timeline_width)/x_y_ratio );
 //				current['x'] = parseInt( day_pixels * c["end"] ) + cluster_box_width + 100;
 
-				current['w'] = Math.max( parseInt(c["w"] / 25), 20 );
+				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 20), 20 );
 				current['s'] = parseInt(c["w"]);
-				
+
+				current['group'] = c["group_id"];				
 				current['stream'] = c["stream_id"];
 				current['id'] = c["id"];
 
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
-				b.fillColor = colors_plain[ current["stream"] % colors_plain.length ];
+				b.fillColor = colors_plain[ current["group"] % colors_plain.length ];
 				b.strokeWidth = 0;
 
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
@@ -390,7 +395,7 @@ function get_links(){
 						)
 					);
 					p.add(start.add([ 0, + previous["w"] ]));
-				p.fillColor = colors_plain[ previous["stream"] % colors_plain.length ];
+				p.fillColor = colors_plain[ previous["group"] % colors_plain.length ];
 				p.fillColor.alpha = 0.9;
 
 		});
