@@ -323,7 +323,7 @@ function get_clusters(){
 function hover_cluster(cluster){
 	var p = cluster["path"];
 	
-	p.strokeWidth		= 10;
+	p.strokeWidth		= 5;
 	p.strokeColor		= "#444";
 	p.strokeColor.alpha	= 0.7;
 	
