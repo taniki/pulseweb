@@ -258,9 +258,9 @@ function get_clusters(){
 			var current = {};
 				// console.log(c);
 			
-				current['x'] = parseInt(  c["x_norm"]	* timeline_width) + cluster_box_width + 100;
+//				current['x'] = parseInt(  c["x_norm"]	* timeline_width) + cluster_box_width + 100;
+				current['x'] = parseInt( day_pixels * c["start"] ) + cluster_box_width + 100;
 				current['y'] = parseInt( (c["y"]		* timeline_width)/x_y_ratio );
-//				current['x'] = parseInt( day_pixels * c["end"] ) + cluster_box_width + 100;
 
 				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 20), 20 );
 				current['s'] = parseInt(c["w"]);
