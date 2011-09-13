@@ -84,7 +84,7 @@ function draw_metroline_single(canvas, stream){
 		c.lineTo(end_x, end_y);
 
 		c.lineWidth = 8;
-		c.strokeStyle = colors_plain[ stream.get("id") % colors_plain.length ];
+		c.strokeStyle = colors_plain[ stream.get("group") % colors_plain.length ];
 		c.stroke();
 		c.closePath();
 
@@ -107,7 +107,7 @@ function draw_metroline_single(canvas, stream){
 
 		c.beginPath();
 		c.arc(x, y, cluster_radius, 0, Math.PI*2,true);
-		c.fillStyle = colors_plain[ stream.get("id") % colors_plain.length ];
+		c.fillStyle = colors_plain[ stream.get("group") % colors_plain.length ];
 		c.fill();
 		c.closePath();
 

@@ -51,7 +51,7 @@ function draw_clusters(e){
 
 	while (g.lastChild) g.removeChild(g.lastChild);
 
-	var color = colors_plain[ clusters[ e.features[0]["data"]["cluster_id"] ]["stream"] % colors_plain.length ]
+	var color = colors_plain[ clusters[ e.features[0]["data"]["cluster_id"] ]["group"] % colors_plain.length ]
 
 	f.forEach(function(p){
 

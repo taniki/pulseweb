@@ -137,7 +137,7 @@ function get_clusters(){
 
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
-				b.fillColor = colors_plain[ current["stream"] % colors_plain.length ];
+				b.fillColor = colors_plain[ current["group"] % colors_plain.length ];
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 //				current['path'] = new Path.Rectangle( current['x'] - cluster_box_width/2, current['y'] - current['w'], cluster_box_width, 2 * current['w']);
 				current['path'].fillColor = '#ffffff';

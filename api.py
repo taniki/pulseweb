@@ -16,12 +16,13 @@ import simplejson as json
 def streams():
 	streams = []
 	
-	for s in query_db('select *, count(distinct period) as period_count from clusters group by stream_id'):
+	for s in query_db('SELECT *, COUNT(distinct period) AS period_count FROM clusters GROUP BY stream_id ORDER BY suprathematique'):
 		if s["period_count"] == 1 : continue
 
 		stream = {}
 
 		stream["id"] = s["stream_id"]	
+		stream["group"] = s["suprathematique"]	
 		stream["title"] = s["cluster_label"]
 		stream["clusters"] = []
 		stream["links"] = []
