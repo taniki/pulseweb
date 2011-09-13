@@ -25,7 +25,7 @@ var layer_background;
 var viz_elements;
 var control_elements;
 
-var timeline_width = 4000;
+var timeline_width = 3000;
 var x_y_ratio = 1.8;
 
 var day_pixels = timeline_width / 4198;
@@ -40,6 +40,21 @@ var cluster_hover;
 var selected = {
 	stream: 0,
 	cluster: 0
+};
+
+var timeline = {
+	rules: [
+		{
+			start: 	8 * 360,
+			end: 	9 * 360,
+			ratio: 	3
+		},
+		{
+			start: 	9 * 360,
+			end: 	12 * 360,
+			ratio: 	2
+		}
+	]
 };
 
 
@@ -158,6 +173,16 @@ function pan_to_cluster(cluster){
 	global_move["y"] += y;
 }
 
+function x_day(day){
+	var offset = 0;
+	
+	timeline.rules.forEach(function(r){
+		offset += Math.min((r.end - r.start), Math.max(0, (day - r.start))) * (r.ratio - 1);
+	});
+
+	return (offset + day) * day_pixels;
+}
+
 function zoom(factor){
 	if(global_scale < 1){
 		global_scale += factor;
@@ -191,7 +216,7 @@ function draw_background(){
 	var h = 3000; //view.size.height;
 
 	for(var y = 0;  y < 12; y++){
-		var x = parseInt( y * 360 * day_pixels) + 0.5;
+		var x = parseInt( x_day( y * 360) ) + 0.5;
 
 		var p = new Path();
 			p.add( [ 100 + x, 0 ]);
@@ -227,7 +252,7 @@ function draw_distribution_articles_by_month(d){
 	Object.keys(d).forEach(function(year){
 		Object.keys(d[year]).forEach(function (month){
 			//console.log( year - 2000);
-			point = new Point( parseInt( ( 360 * ( year - 2000) + 30 * (month - 1)) * day_pixels) + 100 + 1, 38);
+			point = new Point( parseInt( x_day( 360 * ( year - 2000) + 30 * (month - 1)) ) + 100 + 1, 38);
 			size = new Size( 29 * day_pixels, parseInt( d[year][month] / 5) + 10);
 			var r = new Path.Rectangle(point, size);
 			r.fillColor= "#dddddd"
@@ -259,10 +284,10 @@ function get_clusters(){
 				// console.log(c);
 			
 //				current['x'] = parseInt(  c["x_norm"]	* timeline_width) + cluster_box_width + 100;
-				current['x'] = parseInt( day_pixels * c["start"] ) + cluster_box_width + 100;
-				current['y'] = parseInt( (c["y"]		* timeline_width)/x_y_ratio );
+				current['x'] = parseInt( x_day(c["start"]) ) + cluster_box_width + 100;
+				current['y'] = parseInt( (c["y"] * timeline_width)/x_y_ratio );
 
-				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 20), 20 );
+				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 12), 20 );
 				current['s'] = parseInt(c["w"]);
 
 				current['group'] = c["group_id"];				
