@@ -41,8 +41,8 @@ canvas { margin : 0; }
 #viz .ui .loading img { display: block; position : relative; top : 7px; left : 17px; }
 
 #map { position: relative; top : 0px; left : 0px; height : 100%; }
-#map { font-family : verdana; text-anchor : middle; font-size : 14px; }
-#map .w { font-size : 12px; }
+#map { font-family : verdana; text-anchor : middle; font-size : 16px; }
+#map .w { font-size : 12px; text-anchor : middle; }
 /*
 #map .marker_border { display:block; width : 35px; height : 35px; }
 #map .marker { display:block; width : 25px; height : 25px; }

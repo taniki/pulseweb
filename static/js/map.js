@@ -54,47 +54,48 @@ function draw_clusters(e){
 	var color = colors_plain[ clusters[ e.features[0]["data"]["cluster_id"] ]["stream"] % colors_plain.length ]
 
 	f.forEach(function(p){
-		var volume = g.appendChild(po.svg("circle"));
-		    volume.setAttribute("cx", p.data.geometry.coordinates.x);
-		    volume.setAttribute("cy", p.data.geometry.coordinates.y);
-		    volume.setAttribute("r", parseInt( p.data.w * 2 ));
-			volume.setAttribute("fill", color);
-			volume.setAttribute("opacity", 0.6);
 
-		var border = g.appendChild(po.svg("circle"));
-		    border.setAttribute("cx", p.data.geometry.coordinates.x);
-		    border.setAttribute("cy", p.data.geometry.coordinates.y);
-		    border.setAttribute("r", 35);
-			border.setAttribute("class", "marker_border");
-			border.setAttribute("fill", color);
-			border.setAttribute("opacity", 0.9);
 
 		var marker = g.appendChild(po.svg("circle"));
 		    marker.setAttribute("cx", p.data.geometry.coordinates.x);
 		    marker.setAttribute("cy", p.data.geometry.coordinates.y);
-			marker.setAttribute("r", 25);
+			marker.setAttribute("r", 24);
 			marker.setAttribute("class", "marker");
-			marker.setAttribute("fill", "#ffffff");
+			marker.setAttribute("fill", color);
 			marker.setAttribute("opacity", 1);
 			marker.setAttribute("data-iso", p.data.iso);
 			marker.setAttribute("data-cluster_id", p.data.cluster_id);
 
-			$(marker).click(function(e){
-				console.log([ p.data.cluster_id, p.data.iso ]);
-				explorer.open_country(p.data.cluster_id, p.data.iso);
-			});
+
+		if(p.data.w < 10){
+			marker.setAttribute("r", 12);
+		} else {
+			var volume = g.insertBefore(po.svg("circle"), marker);
+				//volume.insertBefore(marker);
+			    volume.setAttribute("cx", p.data.geometry.coordinates.x);
+			    volume.setAttribute("cy", p.data.geometry.coordinates.y);
+			    volume.setAttribute("r", parseInt( p.data.w * 2.2 ));
+				volume.setAttribute("fill", color);
+				volume.setAttribute("opacity", 0.6);
+
+			var val = g.appendChild(po.svg("text"));
+			    val.setAttribute("x", p.data.geometry.coordinates.x);
+			    val.setAttribute("y", p.data.geometry.coordinates.y);
+			    val.setAttribute("dy", "6px");
+			    val.appendChild(document.createTextNode( parseInt(p.data.w)));
+		}
 
 		var iso = g.appendChild(po.svg("text"));
 		    iso.setAttribute("x", p.data.geometry.coordinates.x);
 		    iso.setAttribute("y", p.data.geometry.coordinates.y);
-		    // iso.setAttribute("dy", "1em");
+		    iso.setAttribute("dy", "-1.2em");
 		    iso.appendChild(document.createTextNode(p.data.name));
 
-		var val = g.appendChild(po.svg("text"));
-		    val.setAttribute("x", p.data.geometry.coordinates.x);
-		    val.setAttribute("y", p.data.geometry.coordinates.y);
-		    val.setAttribute("dy", "1em");
-		    val.appendChild(document.createTextNode( parseInt(p.data.w)));
+		$(marker).click(function(e){
+			console.log([ p.data.cluster_id, p.data.iso ]);
+			explorer.open_country(p.data.cluster_id, p.data.iso);
+		});
+
 	});
 
 }

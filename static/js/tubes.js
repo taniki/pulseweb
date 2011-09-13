@@ -287,7 +287,7 @@ function get_clusters(){
 				current['x'] = parseInt( x_day(c["start"]) ) + cluster_box_width + 100;
 				current['y'] = parseInt( (c["y"] * timeline_width)/x_y_ratio );
 
-				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 12), 20 );
+				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 14), 2 ) + 6;
 				current['s'] = parseInt(c["w"]);
 
 				current['group'] = c["group_id"];				
@@ -320,20 +320,22 @@ function get_clusters(){
 				}
 				current['label'].content = c["label"];
 
-				current['label_width'] = new PointText( new Point(current['x'], current['y'] + 14 ));
-				current['label_width'].characterStyle = {
-					font: "verdana",
-					fontSize: 6,
-					fillColor: "black"
-				};
-				current['label_width'].paragraphStyle = {
-					justification: 'center'
+
+				if(current['w'] >= 16){
+					current['label_width'] = new PointText( new Point(current['x'], current['y'] + 12 ));
+					current['label_width'].characterStyle = {
+						font: "verdana",
+						fontSize: 5,
+						fillColor: "black"
+					};
+					current['label_width'].paragraphStyle = {
+						justification: 'center'
+					}
+					current['label_width'].content = current["s"];
 				}
-				
+
 				current["density"] = c["w"] / c["period_length"];
 				
-				current['label_width'].content = current["s"];
-
 				current['path'].cluster_id = c["id"];
 				
 			clusters[c["id"]] = current;
