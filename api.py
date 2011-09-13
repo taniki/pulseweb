@@ -75,6 +75,11 @@ def clusters():
 
 	resp = cache.get("clusters")
 
+	average = {}
+
+	for r in query_db('SELECT * FROM cluster_average'):
+		average[ r["cluster_univ_id"] ] = r["average"]
+
 	if resp is None:
 		for cluster in query_db('SELECT *, count(distinct period) as c FROM clusters WHERE isolated = 0 GROUP BY cluster_univ_id'):
 		
@@ -83,6 +88,7 @@ def clusters():
 			cluster_light["label"] = cluster["cluster_label"]
 			cluster_light["id"] = cluster["cluster_univ_id"]
 			cluster_light["x"] = cluster["pos_x"]
+			cluster_light["x_average"] = average[ cluster_light["id"]  ]
 			cluster_light["x_norm"] = cluster["pos_x_t"]
 			cluster_light["y"] = cluster["pos_y"]
 			cluster_light["w"] = cluster["width"]

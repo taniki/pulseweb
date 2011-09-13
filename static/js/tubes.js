@@ -284,10 +284,10 @@ function get_clusters(){
 				// console.log(c);
 			
 //				current['x'] = parseInt(  c["x_norm"]	* timeline_width) + cluster_box_width + 100;
-				current['x'] = parseInt( x_day(c["start"]) ) + cluster_box_width + 100;
+				current['x'] = parseInt( x_day(c["x_average"]) ) + cluster_box_width + 100;
 				current['y'] = parseInt( (c["y"] * timeline_width)/x_y_ratio );
 
-				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 14), 2 ) + 6;
+				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 12), 2 ) + 6;
 				current['s'] = parseInt(c["w"]);
 
 				current['group'] = c["group_id"];				
