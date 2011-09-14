@@ -13,7 +13,7 @@ var colors_plain = [
 	"#E2CD12",
 	"#DE9312",
 	"#DE9312",
-	"#303285"
+	"#9573E6"
 ]
 
 var clusters = {}
@@ -25,8 +25,8 @@ var layer_background;
 var viz_elements;
 var control_elements;
 
-var timeline_width = 3000;
-var x_y_ratio = 1.8;
+var timeline_width = 4198 / 1.5;
+var x_y_ratio = 1.9;
 
 var day_pixels = timeline_width / 4198;
 
@@ -173,6 +173,9 @@ function pan_to_cluster(cluster){
 	global_move["y"] += y;
 }
 
+/*
+ * Get the x position after ratio calulation and constraint rules
+ */
 function x_day(day){
 	var offset = 0;
 	
@@ -181,6 +184,16 @@ function x_day(day){
 	});
 
 	return (offset + day) * day_pixels;
+}
+
+function ratio_day(day){
+	var ratio = 1;
+	
+	timeline.rules.forEach(function(r){
+		if(day >= r.start && day < r.end) ratio += r.ratio - 1;
+	});
+	
+	return ratio;
 }
 
 function zoom(factor){
@@ -252,8 +265,10 @@ function draw_distribution_articles_by_month(d){
 	Object.keys(d).forEach(function(year){
 		Object.keys(d[year]).forEach(function (month){
 			//console.log( year - 2000);
-			point = new Point( parseInt( x_day( 360 * ( year - 2000) + 30 * (month - 1)) ) + 100 + 1, 38);
-			size = new Size( 29 * day_pixels, parseInt( d[year][month] / 5) + 10);
+			var day = 360 * ( year - 2000) + 30 * (month - 1);
+			
+			point = new Point( parseInt( x_day( day ) ) + 100 + 1, 38);
+			size = new Size( 29 * day_pixels * ratio_day( day ), parseInt( d[year][month] / 5) + 10);
 			var r = new Path.Rectangle(point, size);
 			r.fillColor= "#dddddd"
 
