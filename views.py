@@ -3,7 +3,7 @@ from pulseweb import app
 
 @app.route('/')
 def pulsehome():
-	return "pika pika"
+	return render_template("home.html")
 
 @app.route('/tubes/')
 @app.route('/tubes/cluster/<cluster_id>')
