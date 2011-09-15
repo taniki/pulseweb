@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<title>pulseweb - tubes : food security</title>
+
+<link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/lib/jquery.scrollTo-1.4.2-min.js') }}"></script>
+
+<script>
+
+$(document).ready(function(){
+	$("nav li").click(function(e){
+		if($(this).attr("rel") != ""){
+			$.scrollTo("#"+$(this).attr("rel"), "slow", { offset: -42 });
+		}
+	});
+});
+
+</script>
+<style>
+@import url("/static/css/reset.css");
+
+body { padding-bottom : 100px; }
+
+header { position : fixed;  width : 230px; text-align : right;}
+
+.content { width : 696px; text-align : left; margin : 0 0 0 254px; padding-top : 14px; }
+
+h1 { font : bold 42px/42px "Varela", sans-serif; color : black; margin : 0.5em 0;}
+h2 { font : bold 24px/24px "Varela", sans-serif; color : black; margin : 1em 0 0.5em 0; }
+h3 { font : bold 18px/18px "Varela", sans-serif; color : black; margin : 1em 0 0.5em 0; }
+
+p { margin-bottom : 0.5em; }
+p, li { font : normal 14px/1.5em "Varela", sans-serif; color : black; }
+
+.content ul { list-style-type : circle; margin-left : 1.5em;}
+a { color : black; text-decoration : none; border-bottom : 1px solid #99DFF9; }
+a:hover { border-color : #00AEEF }
+
+nav li:hover { cursor : pointer; }
+nav li a { display : block; padding : 6px; border : 0; background : #CF5C42; color : white; margin-right : -6px;}
+nav li a:hover { background : #00AEEF }
+
+</style>
+
+</head>
+<body>
+
+<header>
+<h1 id="pulseweb">pulseweb</h1>
+	
+<nav>
+<ul>
+	<li><a href="/tubes">go to the viz</a></li>
+	<li rel="about">about</li>
+	<li rel="case_studies">case studies</li>
+	<li rel="team">team</li>
+	<li rel="partners">partners</li>
+</ul>
+</nav>
+</header>
+
+<div class="content">
+{% filter markdown %}
+
+<h2 id="about">about</h2>
+
+This project is based on the automatic analysis of news related to food security issues in French language media (national and local).
+
+Text-mining network analysis tools are used to identify the key themes discussed in the press at a given period. Each article is then associated with these automatically reconstructed topics wether they correpond to concerns expressed at the local level, or general statements and action at national/international level.
+
+These news items are also geo-located both by the origin of the story and the places mentionned in the story enabling to map how a given theme or issue is distributed over the world.
+
+Moreover, themes identified at successive time steps are reconnected into streams of content. A stream visualization illustrates how topics articulate through time.
+
+An online interface allows to visualize these maps, themes and news entries and to answer questions such as : Is an issue - concerning for example the impact of climatic change on food security - attracting more attention with time? How this specific issue relates with contiguous subjects (use of biofuel for example) ? Does the climatic change issue observed at a given time stem from, possibly various, past issue framings or is it a completely emergent topic ?
+
+<h2 id="case_studies">case studies</h2>
+
+### reconstruction
+### data visualization
+
+<h2 id="team">team</h2>
+
+- Chavalarias, David
+- Cointet, Jean-Phillipe
+- Cornilleau, Lise
+- Duong, Tam Kien
+- Mogoutov, Andreï
+- Villard, Lionel
+- Roth, Camille
+- Savy, Thierry
+
+<h2 id="partners">partners</h2>
+
+- [Complex Systems Institute of Paris (ISC-PIF)](http://iscpif.fr)
+- [Formism](http://formism.net)
+- [IFRIS](http://ifris.org)
+- [CAMS](http://cams.ehess.fr/)
+- [CREA](http://www.crea.polytechnique.fr/LeCREA/)
+- [INRA-SenS](http://www.inra-ifris.org/)
+
+{% endfilter %}
+</div>
+
+</body>
+</html>
