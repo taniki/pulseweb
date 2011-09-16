@@ -53,3 +53,7 @@ SELECT countries.*, sum(weight) as weight from region_weight, countries WHERE co
 CREATE TABLE cluster_country_weight
 AS
 SELECT cluster_univ_id, countrycode as iso, sum(weight) as weight from region_weight, cluster_article WHERE region_weight.id = article_id group by countrycode, cluster_univ_id
+
+CREATE TABLE cluster_average
+AS
+SELECT cluster_univ_id, avg(date) as average FROM cluster_article, articles WHERE articles.id = cluster_article.article_id group by cluster_univ_id;

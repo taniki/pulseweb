@@ -80,7 +80,20 @@ An online interface allows to visualize these maps, themes and news entries and 
 <h2 id="case_studies">case studies</h2>
 
 ### reconstruction
+
+
+
 ### data visualization
+
+The web interface have been built with a wide range of opensource software that allowed us to build the current full functionnal website in less than one month.
+
+We used [tilemill](http://mapbox.com/tilemill/) to design the exact map we wanted to and [tilestream](https://github.com/mapbox/tilestream) to deploy it on an self owned map streaming server. We got the choice between polymaps and modestmaps. We choose the former one because we were planning do add multiple information layers.
+
+The user interface rely heavily on [backbone.js](http://documentcloud.github.com/). The MVC cost entry was a lot worth of it and is the keystone to the quick deployement of complex interactions between the different components.
+
+The main tube data visualization is using the [paperjs](http://paperjs.org/) library. It have been chosen for both its simplicity (compared to direct canvas js code) and its performance while keeping a vector graphic framework.
+
+Big thanks to all opensource software developpers and the great job. We cannot imagine how many man hours all this represents and how many we should have spent if all this didn't exist.
 
 <h2 id="team">team</h2>
 
