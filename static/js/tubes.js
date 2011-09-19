@@ -269,7 +269,7 @@ function draw_distribution_articles_by_month(d){
 			var day = 360 * ( year - 2000) + 30 * (month - 1);
 			
 			point = new Point( parseInt( x_day( day ) ) + 100 + 1, 38);
-			size = new Size( 29 * day_pixels * ratio_day( day ), parseInt( d[year][month] / ( 5 * ratio_day( day )) ) + 10);
+			size = new Size( 30 * day_pixels * ratio_day( day ) - 1, parseInt( d[year][month] / ( 5 * ratio_day( day )) ) + 10);
 			var r = new Path.Rectangle(point, size);
 			r.fillColor= "#dddddd"
 
