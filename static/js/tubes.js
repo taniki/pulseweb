@@ -26,7 +26,7 @@ var layer_background;
 var viz_elements;
 var control_elements;
 
-var timeline_width = 4198 / 1.5;
+var timeline_width = 4198;
 var x_y_ratio = 1.9;
 
 var day_pixels = timeline_width / 4198;
@@ -303,7 +303,8 @@ function get_clusters(){
 				current['x'] = parseInt( x_day(c["x_average"]) ) + cluster_box_width + 100;
 				current['y'] = parseInt( (c["y"] * timeline_width)/x_y_ratio );
 
-				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 12), 2 ) + 6;
+//				current['w'] = Math.max( parseInt( (c["w"]/c["period_length"]) * 10), 2 ) + 6;
+				current['w'] = Math.max( parseInt( c["w"] / 10), 2 ) + 6;
 				current['s'] = parseInt(c["w"]);
 
 				current['group'] = c["group_id"];				
