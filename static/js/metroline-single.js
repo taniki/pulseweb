@@ -124,7 +124,7 @@ function draw_metroline_single(canvas, stream){
 			select_cluster(clusters[cluster["id"]]);
 			pan_to_cluster(clusters[cluster["id"]]);
 			
-			sidenav.select(stream["id"]);
+			sidenav.select(stream["id"], false);
 			explorer.load_cluster(cluster["id"])
 		}
 

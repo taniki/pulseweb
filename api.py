@@ -131,7 +131,7 @@ def cluster_geo(cluster_id):
 	resp = []
 
 	countries = {}
-	
+
 	for c in query_db('SELECT iso, name, capital_lat, capital_long FROM countries'):
 		countries[ c["iso"] ] = c
 
@@ -244,6 +244,7 @@ def meta():
 def row_to_article(r):
 	o = {}
 	
+	o["id"] = r["id"]
 	o["title"] = r["title"]
 	o["source"] =  r["source"]
 	o["author"] =  r["author"]
@@ -253,6 +254,8 @@ def row_to_article(r):
 	# 978306360
 	o["date"] =  date.fromtimestamp( 946681200 + int(r["date"]) * 86400 ).strftime("%d/%m/%Y")
 	o["content"] =  r["abstract"]
+	
+	#q = 'SELECT terms_id FROM articles2terms WHERE wos_id = %i' % r["id"]
 
 	return o
 
