@@ -46,6 +46,11 @@ var selected = {
 var timeline = {
 	rules: [
 		{
+			start: 	0 * 360,
+			end: 	4 * 360,
+			ratio: 	0.5
+		},
+		{
 			start: 	8 * 360,
 			end: 	9 * 360,
 			ratio: 	3
@@ -58,6 +63,7 @@ var timeline = {
 	]
 };
 
+var groups = {};
 
 window.onload = function() {
 	$("#tubes").attr("width", $(window).width() - 242);
@@ -311,9 +317,25 @@ function get_clusters(){
 				current['stream'] = c["stream_id"];
 				current['id'] = c["id"];
 
+				if(!groups[ c["group_id"] ]){
+					groups[ c["group_id"] ] = {};
+				}
+				
+				if(!groups[ c["group_id"] ][ c["stream_id"] ]){
+					groups[ c["group_id"] ][ c["stream_id"] ] = {
+						count: 0,
+						pos: Object.keys(groups[ c["group_id"] ]).length
+					};
+				}
+				
+				groups[ c["group_id"] ][ c["stream_id"] ]["count"] += 1;
+
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 				b.fillColor = colors_plain[ current["group"] % colors_plain.length ];
+				
+				b.fillColor.brightness = b.fillColor.brightness - groups[ current["group"] ][ current["stream"] ].pos * 0.02
+							
 				b.strokeWidth = 0;
 
 				current['path'] = new Path.Circle( [ current['x'], current['y'] ], current['w']);
@@ -359,7 +381,7 @@ function get_clusters(){
 		});
 
 		layer_clusters.visible = true;
-
+		console.log(groups);
 		get_links();
 	});
 }
@@ -440,6 +462,9 @@ function get_links(){
 					);
 					p.add(start.add([ 0, + previous["w"] ]));
 				p.fillColor = colors_plain[ previous["group"] % colors_plain.length ];
+				// console.log(p.fillColor.brightness);
+				p.fillColor.brightness = p.fillColor.brightness - groups[ previous["group"] ][ previous["stream"] ].pos * 0.02
+				
 				p.fillColor.alpha = 0.9;
 
 		});
