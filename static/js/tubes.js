@@ -333,8 +333,15 @@ function get_clusters(){
 				// TODO Si quelqu'un sait calculer cette couleur sans faire le boulet. YURWELCOME.
 				var b = new Path.Circle( [ current['x'], current['y'] ], current['w']);
 				b.fillColor = colors_plain[ current["group"] % colors_plain.length ];
-				
-				b.fillColor.brightness = b.fillColor.brightness - groups[ current["group"] ][ current["stream"] ].pos * 0.02
+
+
+				var pos = groups[ current["group"] ][ current["stream"] ].pos;
+
+				if (pos % 2 == 0){
+					pos = - pos;
+				}
+								
+				b.fillColor.brightness = b.fillColor.brightness - pos * 0.05;
 							
 				b.strokeWidth = 0;
 
@@ -463,7 +470,14 @@ function get_links(){
 					p.add(start.add([ 0, + previous["w"] ]));
 				p.fillColor = colors_plain[ previous["group"] % colors_plain.length ];
 				// console.log(p.fillColor.brightness);
-				p.fillColor.brightness = p.fillColor.brightness - groups[ previous["group"] ][ previous["stream"] ].pos * 0.02
+				
+				var pos = groups[ previous["group"] ][ previous["stream"] ].pos
+
+				if (pos % 2 == 0){
+					pos = - pos;
+				}
+								
+				p.fillColor.brightness = p.fillColor.brightness - pos * 0.04
 				
 				p.fillColor.alpha = 0.9;
 
