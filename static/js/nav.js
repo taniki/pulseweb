@@ -59,7 +59,7 @@ metroline_view = Backbone.View.extend({
 
 metrolines_collection = Backbone.Collection.extend({
 //	url: '/data/streams',
-	url: '/data/hyperstreams',
+	url: '/data/streams',
 	model: metroline,
 });
 
