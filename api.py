@@ -81,7 +81,7 @@ def streams():
 
 		stream["id"] = s["stream_id"]	
 		stream["group"] = s["suprathematique"]	
-		stream["title"] = s["cluster_label"]
+		stream["title"] = s["stream_label"]
 		stream["clusters"] = []
 		stream["links"] = []
 
