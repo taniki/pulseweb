@@ -12,6 +12,64 @@ import simplejson as json
 
 # date_offset = 
 
+@app.route('/data/hyperstreams')
+def hyperstreams():
+	streams = []
+	scope = {}
+	
+	
+	for s in query_db('SELECT min(y_pos), max(y_pos), suprathematique FROM clusters, positions_superstreams WHERE clusters.cluster_univ_id = positions_superstreams.cluster_univ_id GROUP BY clusters.suprathematique'):
+		scope[ s["suprathematique"] ] = {}
+		scope[ s["suprathematique"] ]["min_y"] = s["min(y_pos)"]
+		scope[ s["suprathematique"] ]["max_y"] = s["max(y_pos)"]
+		scope[ s["suprathematique"] ]["height"] = s["max(y_pos)"] + 1
+		
+	for s in query_db('SELECT *, COUNT(distinct period) AS period_count FROM clusters GROUP BY suprathematique ORDER BY suprathematique'):
+		if s["period_count"] == 1 : continue
+
+		stream = {}
+
+		stream["id"] = s["suprathematique"]	
+		stream["group"] = s["suprathematique"]	
+		stream["title"] = s["suprathematique_label"]
+		stream["clusters"] = []
+		stream["links"] = []
+
+		stream["min_y"] = scope[stream["id"]]["min_y"]
+		stream["max_y"] = scope[stream["id"]]["max_y"]
+		stream["height"]= scope[stream["id"]]["height"]
+
+		clusters = {}
+
+		for t in query_db('SELECT clusters.cluster_univ_id, pos_x, y_pos FROM clusters, positions_superstreams WHERE clusters.suprathematique = %i AND clusters.cluster_univ_id = positions_superstreams.cluster_univ_id GROUP BY clusters.cluster_univ_id' % (s["suprathematique"])):
+			cluster = {}
+			
+			cluster["id"] = t["cluster_univ_id"]
+			cluster["x"] = t["pos_x"]
+			cluster["y"] = t["y_pos"] - stream["min_y"]
+
+			clusters[cluster["id"]] = cluster
+			stream["clusters"].append(cluster)
+
+		for l in query_db('SELECT *, suprathematique FROM phylogeny, clusters WHERE clusters.suprathematique = %i AND clusters.stream_id = phylogeny.stream_id GROUP BY id0' % (s["suprathematique"]) ):
+			l_light = {}
+			l_light["previous"] = l["previous_cluster_univ_id"]
+			l_light["current"] = l["current_cluster_univ_id"]
+
+			l_light["start"] = {}
+			l_light["start"]["x"] = clusters[l_light["previous"]]["x"]
+			l_light["start"]["y"] = clusters[l_light["previous"]]["y"]
+
+			l_light["end"] = {}
+			l_light["end"]["x"] = clusters[l_light["current"]]["x"]
+			l_light["end"]["y"] = clusters[l_light["current"]]["y"]
+
+			stream["links"].append(l_light)
+
+		streams.append(stream)
+	
+	return json.dumps(streams)
+
 @app.route('/data/streams')
 def streams():
 	streams = []
@@ -82,8 +140,9 @@ def clusters():
 		average[ r["cluster_univ_id"] ] = r["average"]
 
 	if resp is None:
-		for cluster in query_db('SELECT *, count(distinct period) as c FROM clusters WHERE isolated = 0 GROUP BY cluster_univ_id'):
-		
+		for cluster in query_db('SELECT * FROM clusters WHERE isolated = 0 GROUP BY cluster_univ_id ORDER BY AVG(pos_y)'):
+			# , count(distinct period) as c
+
 			# Reduction des donnees transferees 1.4 mo -> 230 ko
 			cluster_light = {}
 			cluster_light["label"] = cluster["cluster_label"]

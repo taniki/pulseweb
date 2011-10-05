@@ -335,13 +335,8 @@ function get_clusters(){
 				b.fillColor = colors_plain[ current["group"] % colors_plain.length ];
 
 
-				var pos = groups[ current["group"] ][ current["stream"] ].pos;
+				b.fillColor = var_color(b.fillColor, current["group"], current["stream"]);
 
-				if (pos % 2 == 0){
-					pos = - pos;
-				}
-								
-				b.fillColor.brightness = b.fillColor.brightness - pos * 0.05;
 							
 				b.strokeWidth = 0;
 
@@ -470,15 +465,10 @@ function get_links(){
 					p.add(start.add([ 0, + previous["w"] ]));
 				p.fillColor = colors_plain[ previous["group"] % colors_plain.length ];
 				// console.log(p.fillColor.brightness);
-				
-				var pos = groups[ previous["group"] ][ previous["stream"] ].pos
 
-				if (pos % 2 == 0){
-					pos = - pos;
-				}
-								
-				p.fillColor.brightness = p.fillColor.brightness - pos * 0.04
-				
+
+				p.fillColor = var_color(p.fillColor, previous["group"], previous["stream"]);
+			
 				p.fillColor.alpha = 0.9;
 
 		});
@@ -509,4 +499,16 @@ function move_clusters(e){
 		var item = hitResult.item;
 		item.selected = true;
 	}
+}
+
+function var_color(color, hyperstream, stream){
+	var pos = groups[ hyperstream ][ stream ].pos;
+
+	if (pos % 2 == 0){
+		pos = - pos;
+	}
+	
+	color.brightness = color.brightness - pos * 0.03;
+		
+	return color;
 }
