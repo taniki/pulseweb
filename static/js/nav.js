@@ -110,7 +110,7 @@ app_routes = Backbone.Router.extend({
 	},
 	
 	home: function(){
-		pan_to_cluster(clusters[36]);
+		pan_to_cluster(clusters[161]);
 	},
 	
 	map: function(){
