@@ -284,7 +284,7 @@ def clusters_metrolines():
 def clusters_links():
 	links = []
 
-	for l in query_db('select * from phylogeny'):
+	for l in query_db('select * from phylogeny order by stream_id'):
 		l_light = {}
 		l_light["previous"] = l["previous_cluster_univ_id"]
 		l_light["current"] = l["current_cluster_univ_id"]
